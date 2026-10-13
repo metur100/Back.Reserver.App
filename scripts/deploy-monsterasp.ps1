@@ -36,9 +36,9 @@ $out = Join-Path $root '.run/deploy/site'
 if (-not $SkipBuild) {
     if (Test-Path $out) { Remove-Item $out -Recurse -Force }
     Write-Host "Publishing (Release, $Runtime, self-contained)..."
-    # RestorePackagesWithLockFile=false: a RID-specific restore must not rewrite the committed (RID-less) lock files,
-    # otherwise CI's locked-mode restore fails with NU1004.
-    dotnet publish (Join-Path $root 'backend/BackReserve.Api/BackReserve.Api.csproj') -c Release -r $Runtime --self-contained true -o $out --nologo -v q -p:RestorePackagesWithLockFile=false
+    # A RID-specific restore must not rewrite the committed (RID-less) lock files, otherwise CI's locked-mode restore
+    # fails with NU1004. Disabling lock files is rejected while they exist (NU1005), so redirect them into obj/.
+    dotnet publish (Join-Path $root 'backend/BackReserve.Api/BackReserve.Api.csproj') -c Release -r $Runtime --self-contained true -o $out --nologo -v q "-p:NuGetLockFilePath=obj/packages.$Runtime.lock.json"
     if ($LASTEXITCODE -ne 0) { throw 'dotnet publish failed' }
 }
 
