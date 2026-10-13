@@ -59,7 +59,7 @@ jobs:
           if grep -qiE "has the following vulnerable packages" vuln.txt; then echo "Vulnerable packages found"; exit 1; fi
       - name: Upload test results
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: backend-test-results
           path: TestResults
@@ -161,7 +161,7 @@ jobs:
         run: npx playwright test
       - name: Upload Playwright report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: playwright-report
           path: |
