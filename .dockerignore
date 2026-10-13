@@ -1,0 +1,11 @@
+**/node_modules/
+**/bin/
+**/obj/
+**/App_Data/
+.run/
+.git/
+apps/
+tests/e2e/
+**/*.user
+.env
+.env.*

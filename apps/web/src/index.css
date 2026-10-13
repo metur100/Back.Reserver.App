@@ -1,0 +1,156 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/inter';
+@import '@fontsource-variable/fraunces';
+
+/* BackReserve design tokens. Warm, calm and readable in bright shop environments. */
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-serif: 'Fraunces Variable', ui-serif, Georgia, 'Times New Roman', serif;
+
+  --color-background: #faf6f0;
+  --color-surface: #ffffff;
+  --color-surface-muted: #f4ede3;
+  --color-surface-sunken: #efe6da;
+  --color-foreground: #2b211c;
+  --color-muted-foreground: #66574d;
+  --color-subtle-foreground: #85766b;
+  --color-border: #e5d9ca;
+  --color-border-strong: #d3c3b0;
+  --color-input: #d9cbba;
+
+  --color-primary: #b5562b;
+  --color-primary-hover: #9c4722;
+  --color-primary-strong: #8f3f1d;
+  --color-primary-soft: #f7e6dc;
+  --color-primary-foreground: #ffffff;
+
+  --color-caramel: #c98a3d;
+  --color-caramel-soft: #f6ead8;
+
+  --color-success: #3c6a48;
+  --color-success-strong: #2f5639;
+  --color-success-soft: #e5efe6;
+  --color-warning: #8a5a00;
+  --color-warning-soft: #fbefd6;
+  --color-danger: #a33a2b;
+  --color-danger-strong: #8a2f22;
+  --color-danger-soft: #f9e4df;
+  --color-info: #2f5d7c;
+  --color-info-soft: #e3edf4;
+
+  --color-ring: #b5562b;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --shadow-soft: 0 1px 2px rgb(43 33 28 / 0.05), 0 1px 3px rgb(43 33 28 / 0.06);
+  --shadow-raised: 0 4px 12px rgb(43 33 28 / 0.08), 0 1px 3px rgb(43 33 28 / 0.06);
+  --shadow-overlay: 0 12px 32px rgb(43 33 28 / 0.16), 0 2px 6px rgb(43 33 28 / 0.08);
+
+  --animate-fade-in: fade-in 160ms ease-out;
+  --animate-slide-up: slide-up 200ms ease-out;
+  --animate-slide-in-right: slide-in-right 220ms ease-out;
+  --animate-slide-in-left: slide-in-left 220ms ease-out;
+  --animate-pulse-soft: pulse-soft 1.6s ease-in-out infinite;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes slide-up {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes slide-in-right {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes slide-in-left {
+    from { transform: translateX(-100%); }
+    to { transform: translateX(0); }
+  }
+  @keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.55; }
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-feature-settings: 'cv11', 'ss01';
+  }
+  h1, h2, h3 {
+    @apply text-foreground;
+    text-wrap: balance;
+  }
+  :focus-visible {
+    outline: 3px solid var(--color-ring);
+    outline-offset: 2px;
+    border-radius: 4px;
+  }
+  ::selection {
+    background: var(--color-primary-soft);
+  }
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    opacity: 1;
+  }
+  [hidden] {
+    display: none !important;
+  }
+}
+
+@utility font-display {
+  font-family: var(--font-serif);
+  font-optical-sizing: auto;
+  letter-spacing: -0.01em;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  body {
+    background: #fff;
+  }
+  .print-area {
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+}
+
+.select-chevron {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2366574d' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 16px;
+}

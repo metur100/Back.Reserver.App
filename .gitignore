@@ -1,0 +1,52 @@
+﻿# Build outputs
+bin/
+obj/
+dist/
+build/
+.run/
+coverage/
+TestResults/
+*.trx
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Expo / React Native
+apps/mobile/.expo/
+apps/mobile/android/
+apps/mobile/ios/
+apps/mobile/web-build/
+*.jks
+*.keystore
+*.p8
+*.p12
+*.mobileprovision
+*.pem
+
+# Playwright
+tests/e2e/test-results/
+tests/e2e/playwright-report/
+tests/e2e/.auth/
+apps/web/test-results/
+apps/web/playwright-report/
+
+# Local configuration and secrets
+.env
+.env.*
+!.env.example
+appsettings.*.local.json
+*.user
+secrets.json
+
+# Runtime data (uploads, logs)
+App_Data/
+*.log
+
+# IDE / OS
+.vs/
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
