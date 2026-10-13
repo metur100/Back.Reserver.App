@@ -24,7 +24,7 @@
     "expo-splash-screen": "~57.0.10",
     "expo-status-bar": "~57.0.1",
     "react": "19.2.3",
-    "react-dom": "19.2.3",
+    "react-dom": "19.3.0",
     "react-hook-form": "^7.90.0",
     "react-native": "0.86.3",
     "react-native-qrcode-svg": "^6.3.26",
