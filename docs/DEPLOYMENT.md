@@ -10,7 +10,7 @@ BackReserve consists of three deployables: the **API** (container or any ASP.NET
 | Landing page | GitHub Pages, repository `metur100/Back.Reserver.Landing` | https://metur100.github.io/Back.Reserver.Landing/ |
 | API | MonsterASP (IIS shared hosting, 32-bit application pool), deployed with `scripts/deploy-monsterasp.ps1` | https://backreserve.runasp.net (`/health/ready`) |
 | Database | MonsterASP SQL Server (only reachable from inside the provider network) | — |
-| Email | SMTP via netcup (company mailbox, port 465 / implicit TLS; settings in `.run/monsterasp.env`) | — |
+| Email | SMTP via Gmail (`smtp.gmail.com`, port 587 / STARTTLS, app password; settings in `.run/monsterasp.env`). Gmail caps sending at ~500 mails/day | — |
 
 How it is configured:
 - **Secrets live only on the server** (as environment variables in the deployed `web.config`) and in the git-ignored local file `.run/monsterasp.env` on the deploying machine. Nothing secret is in the repository. Keys in that file: `MSDEPLOY_SITE`, `MSDEPLOY_HOST`, `MSDEPLOY_USER`, `MSDEPLOY_PASSWORD`, `PUBLIC_API_URL`, plus every app setting (`ConnectionStrings__Default`, `Jwt__SigningKey`, `App__WebBaseUrl`, `Cors__AllowedOrigins__0`, `Email__*`, `Auth__*`, `Seed__*`, …).

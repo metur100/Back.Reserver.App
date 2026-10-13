@@ -4,6 +4,7 @@
     <TargetFramework>net10.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
+    <UserSecretsId>backreserve-api-7c2f4e1a-9b3d-4f6e-8a51-2d0c9e7b4f13</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
