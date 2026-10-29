@@ -1,8 +1,12 @@
 # Store release – BackReserve mobile app (iOS & Android)
 
-> **Status: The app has NOT been submitted to the Apple App Store or Google Play.** No store listing, no EAS project,
-> no signing credentials and no push credentials exist yet. Everything below is preparation: what is configured in
-> `apps/mobile`, what is still a placeholder, and the steps for a first release.
+> **Status (2026-10-29): The app has NOT been submitted to the Apple App Store or Google Play.**
+> Android is ready for a first upload: package `com.certidevelopment.backreserve`, a locally signed release AAB
+> 1.0.0 (versionCode 1) against the production API, an upload keystore, Play listing graphics and a copy-paste
+> checklist for every Play Console field in
+> [`apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md`](../apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md).
+> Still open: real privacy policy / imprint / deletion page on the landing site (currently placeholders), Play Console
+> app record, `assetlinks.json`, EAS project, everything iOS (bundle id, App Store Connect, screenshots), push.
 
 The app is an Expo (SDK 57) / React Native app in `apps/mobile` with Expo Router. It is used by **customers**
 (reserve bakery products without an account, pay at pickup) and by **bakery staff** (sign in, process today's orders,
@@ -10,19 +14,21 @@ record pickups by code or QR scan). It talks to the same BackReserve API as the 
 
 ---
 
-## 1. Placeholders to replace before the first release
+## 1. Identifiers and remaining placeholders
 
-| What | Where | Current placeholder |
+| What | Where | Value |
 |---|---|---|
-| iOS bundle identifier / Android package | `apps/mobile/app.config.ts` (`BUNDLE_ID`) | `de.backreserve.app` (preview/dev builds get `.preview` / `.dev` suffixes so all three can be installed side by side) |
-| Universal / App Link domain | `app.config.ts` (`UNIVERSAL_LINK_HOST` or env `UNIVERSAL_LINK_HOST`) | `app.backreserve.example` |
-| Production API | `eas.json` → `build.production.env.EXPO_PUBLIC_API_URL` | `https://api.backreserve.example` |
-| Staging API (preview builds) | `eas.json` → `build.preview.env.EXPO_PUBLIC_API_URL` | `https://staging-api.backreserve.example` |
-| EAS project id / owner | env `EAS_PROJECT_ID`, `EAS_OWNER` (read in `app.config.ts`) | not set |
-| App Store Connect app id | `eas.json` → `submit.production.ios.ascAppId` | `REPLACE_WITH_APP_STORE_CONNECT_APP_ID` |
-| Privacy policy URL | Store listings | `https://backreserve.example/datenschutz` (placeholder) |
-| Support URL / e-mail | Store listings | `https://backreserve.example/hilfe`, `support@backreserve.example` (placeholders) |
-| Imprint (Impressum) | Store listings (required for German publishers) | `https://backreserve.example/impressum` (placeholder) |
+| iOS bundle identifier / Android package | `apps/mobile/app.config.ts` (`BUNDLE_ID`) | `com.certidevelopment.backreserve` (preview/dev builds get `.preview` / `.dev` suffixes so all three can be installed side by side) |
+| Universal / App Link domain | `app.config.ts` (`UNIVERSAL_LINK_HOST` or env `UNIVERSAL_LINK_HOST`) | `reserver-app.gentlegroup.de` (the web app) |
+| Production API | `eas.json` → `build.production.env.EXPO_PUBLIC_API_URL` (and the `production` default in `app.config.ts`) | `https://backreserve.runasp.net` |
+| Preview builds API | `eas.json` → `build.preview.env.EXPO_PUBLIC_API_URL` | `https://backreserve.runasp.net` (there is no separate staging API) |
+| EAS project id / owner | env `EAS_PROJECT_ID`, `EAS_OWNER` (read in `app.config.ts`) | **not set** |
+| App Store Connect app id | `eas.json` → `submit.production.ios.ascAppId` | **placeholder** `REPLACE_WITH_APP_STORE_CONNECT_APP_ID` |
+| Website | Store listings | `https://reserver.gentlegroup.de/` (landing page, repo `metur100/Back.Reserver.Landing`) |
+| Privacy policy URL | Store listings | `https://reserver.gentlegroup.de/datenschutz.html` – **page content is still a placeholder** |
+| Imprint (Impressum) | Store listings (required for German publishers) | `https://reserver.gentlegroup.de/impressum.html` – **page content is still a placeholder** |
+| Account/data deletion URL | Play Data safety | **missing** – add `#loeschung` to the privacy page |
+| Support e-mail | Store listings | `certidevelopment@gmail.com` (developer account contact) |
 
 Release builds only talk to **HTTPS** APIs: Android release builds block cleartext HTTP and iOS ATS blocks it as well.
 `http://…:5280` only works in development builds / Expo Go.
@@ -49,7 +55,9 @@ Generated in brand colours by `npm run generate:assets` (`scripts/generate-asset
 | `notification-icon.png` 96×96 | Android notification small icon | white on transparent |
 | `favicon.png` | web preview | – |
 
-Google Play also requires a **feature graphic 1024×500** (JPEG or 24-bit PNG, no transparency) – still to be designed.
+Google Play listing graphics are in `apps/mobile/store-assets/android/`: `icon-512.png` (512×512, opaque),
+`feature-graphic-1024x500.png` (24-bit PNG, no transparency), 8 phone screenshots (1080×1920), 6 screenshots each for
+7" (1200×1920) and 10" tablets (1600×2560). iOS screenshots are not produced yet.
 
 ## 4. Store listing (German, store-facing)
 
@@ -97,9 +105,9 @@ Google Play also requires a **feature graphic 1024×500** (JPEG or 24-bit PNG, n
 **Preis:** kostenlos, keine In-App-Käufe.
 
 **App Review notes (Apple) / Zugangsdaten für die Prüfung (Google):**
-The staff area requires a login. Provide a review account on the **production** system (a dedicated review bakery with
-demo products), e.g. `review@backreserve.example` with role *Staff*, and a public bakery slug the reviewer can open
-(customer flow needs no account). Explain that payment happens in the shop (no digital goods → no IAP required).
+The staff area requires a login. Review account on the **production** system: `berkcan@gentlegroup.de` /
+`Runderbaum12` (owner of the review bakery “Bäckerei Berkcan”, slug `baeckerei-berkcan`, 2 locations, 40 products,
+sample orders in every status; details in `GOOGLE-PLAY-CONSOLE.md` §7). The customer flow needs no account. Explain that payment happens in the shop (no digital goods → no IAP required).
 Accounts are not created in the app (bakeries register on the web, staff are invited), therefore the in-app account
 deletion requirement (App Store Guideline 5.1.1(v)) does not apply; still link an account-deletion request page in the
 Play listing (see 6).
@@ -108,6 +116,9 @@ Play listing (see 6).
 
 Take screenshots in German from a production-like build (demo bakery), at least: start screen, bakery with products,
 pickup slot selection, confirmation with QR code, "Meine Bestellungen", staff "Heute" list, staff pickup screen.
+The Android set (done 2026-10-29) was rendered from the Expo web export (react-native-web, same components) with
+Playwright against the production API and the review bakery; re-take on a device/emulator when the UI changes.
+Note: Play rejects screenshots whose long side exceeds twice the short side (e.g. 1080×2400).
 
 | Store | Device class | Size (portrait) | Count |
 |---|---|---|---|
@@ -115,7 +126,7 @@ pickup slot selection, confirmation with QR code, "Meine Bestellungen", staff "H
 | App Store | iPhone 6.7" | 1290×2796 | optional if 6.9" provided |
 | App Store | iPhone 6.5" | 1284×2778 or 1242×2688 | optional if 6.9" provided |
 | App Store | iPad 13" (`supportsTablet: true`) | 2064×2752 (or 2048×2732 for 12.9") | 1–10, **required** because iPad is supported |
-| Google Play | Phone | 9:16, e.g. 1080×1920 or 1080×2400 (min 320 px, max 3840 px per side) | 2–8, required |
+| Google Play | Phone | 9:16, e.g. 1080×1920 (min 320 px, max 3840 px per side, long side ≤ 2× short side) | 2–8, required |
 | Google Play | 7" tablet | e.g. 1200×1920 | up to 8, recommended (needed for tablet visibility) |
 | Google Play | 10" tablet | e.g. 1600×2560 | up to 8, recommended |
 
@@ -145,7 +156,7 @@ No analytics SDK, no advertising, no tracking, no location, no contacts, no phot
       service the user orders from / data processor; no sale or advertising)
 - [ ] Data encrypted in transit: **Yes** (HTTPS only in release builds)
 - [ ] Users can request deletion: **Yes** – provide a deletion request URL/e-mail (customers: via the bakery or
-      support; staff accounts: via bakery owner or support). Placeholder: `https://backreserve.example/datenschutz#loeschung`
+      support; staff accounts: via bakery owner or support). Planned URL: `https://reserver.gentlegroup.de/datenschutz.html#loeschung` (section not written yet)
 - [ ] Personal info → **Name**: collected, required, purpose *App functionality* (and *Account management* for staff)
 - [ ] Personal info → **Email address**: collected, required, *App functionality*, *Account management*, *Developer communications* (order confirmation)
 - [ ] Personal info → **Phone number**: collected, optional (unless the bakery requires it), *App functionality*
@@ -185,7 +196,7 @@ to store device tokens yet; the app does not send the token anywhere and no serv
 
 When the backend milestone lands:
 1. `npx eas-cli@latest init` → creates the EAS project; set `EAS_PROJECT_ID` (and `EAS_OWNER`) for builds (EAS env or `eas.json` env).
-2. **Android (FCM v1):** create a Firebase project with package `de.backreserve.app`, download `google-services.json`
+2. **Android (FCM v1):** create a Firebase project with package `com.certidevelopment.backreserve`, download `google-services.json`
    and reference it via `android.googleServicesFile` in `app.config.ts` (do not commit secrets beyond this public
    config file), then upload a Google service account key for FCM v1: `eas credentials` → Android → *Google Service Account Key for Push Notifications (FCM V1)*.
 3. **iOS (APNs):** `eas credentials` → iOS → *Push Notifications: Manage your Apple Push Notifications Key* (EAS can create the key in your Apple Developer account). Set the notifications plugin `mode` to `production` (already done for `APP_ENV=production`).
@@ -197,35 +208,35 @@ When the backend milestone lands:
 Configured routes:
 - `backreserve://b/{slug}` → bakery page
 - `backreserve://bestellung/{ref}?t={token}` → order (token is saved to "Meine Bestellungen")
-- `https://app.backreserve.example/b/{slug}` and `https://app.backreserve.example/bestellung/{ref}#t={token}` (the
+- `https://reserver-app.gentlegroup.de/b/{slug}` and `https://reserver-app.gentlegroup.de/bestellung/{ref}#t={token}` (the
   format used in confirmation e-mails). Fragments are not passed to routes, so `src/app/+native-intent.tsx` rewrites
   `#t=` into `?t=`.
 
-`app.config.ts` declares `ios.associatedDomains: ["applinks:app.backreserve.example"]` and an Android intent filter with
+`app.config.ts` declares `ios.associatedDomains: ["applinks:reserver-app.gentlegroup.de"]` and an Android intent filter with
 `autoVerify: true` for `/b/` and `/bestellung/`. For **verification** the web host must serve (HTTPS, no redirects,
 `Content-Type: application/json`) – these files belong to the web deployment (`apps/web`), not to this app:
 
-`https://app.backreserve.example/.well-known/assetlinks.json`
+`https://reserver-app.gentlegroup.de/.well-known/assetlinks.json`
 ```json
 [{
   "relation": ["delegate_permission/common.handle_all_urls"],
   "target": {
     "namespace": "android_app",
-    "package_name": "de.backreserve.app",
+    "package_name": "com.certidevelopment.backreserve",
     "sha256_cert_fingerprints": ["<SHA-256 of the Play App Signing certificate>"]
   }
 }]
 ```
 Get the fingerprint from Play Console → *App integrity → App signing* (and from `eas credentials` for internally
-distributed builds). Verify: `adb shell pm get-app-links de.backreserve.app` → `verified`, or
-`adb shell pm verify-app-links --re-verify de.backreserve.app`.
+distributed builds). Verify: `adb shell pm get-app-links com.certidevelopment.backreserve` → `verified`, or
+`adb shell pm verify-app-links --re-verify com.certidevelopment.backreserve`.
 
-`https://app.backreserve.example/.well-known/apple-app-site-association` (no file extension)
+`https://reserver-app.gentlegroup.de/.well-known/apple-app-site-association` (no file extension)
 ```json
 {
   "applinks": {
     "details": [{
-      "appIDs": ["<TEAM_ID>.de.backreserve.app"],
+      "appIDs": ["<TEAM_ID>.com.certidevelopment.backreserve"],
       "components": [
         { "/": "/b/*" },
         { "/": "/bestellung/*" }
@@ -234,7 +245,7 @@ distributed builds). Verify: `adb shell pm get-app-links de.backreserve.app` →
   }
 }
 ```
-Apple fetches it via its CDN (`https://app-site-association.cdn-apple.com/a/v1/app.backreserve.example`); test on a
+Apple fetches it via its CDN (`https://app-site-association.cdn-apple.com/a/v1/reserver-app.gentlegroup.de`); test on a
 device by long-pressing a link in Notes/Mail. Preview/dev builds use different bundle ids (`.preview`, `.dev`) – add
 them to both files if links should open those builds.
 
@@ -271,17 +282,44 @@ Notes:
 - OTA updates (`eas update`) can ship JS-only fixes on the `production` channel; native changes need a new build.
 - Signing material (`*.jks`, `*.p8`, `*.p12`, `*.mobileprovision`) is git-ignored and must stay in EAS / a secret store.
 
+### Local signed build (Android, without EAS) – how the 1.0.0 AAB was made
+
+`plugins/withAndroidReleaseSigning.js` adds a `release` signing config that reads `BACKRESERVE_UPLOAD_STORE_FILE`,
+`BACKRESERVE_UPLOAD_STORE_PASSWORD`, `BACKRESERVE_UPLOAD_KEY_ALIAS`, `BACKRESERVE_UPLOAD_KEY_PASSWORD` from environment
+variables or Gradle properties (e.g. `%USERPROFILE%\.gradle\gradle.properties`); without them release builds fall back to
+the debug key (never upload those). `plugins/withLocalCmakeDir.js` writes `ANDROID_CMAKE_DIR` into
+`android/local.properties` – needed on Windows because the SDK's CMake 3.22 ninja fails on long paths.
+
+Upload key: `C:\Users\TurkesMedin\keystore\backreserve\backreserve-upload.jks`, alias `backreserve-upload`,
+password in `C:\Users\TurkesMedin\keystore\backreserve-password.txt` (never commit; back both up).
+
+```bash
+cd apps/mobile
+export APP_ENV=production EXPO_PUBLIC_API_URL=https://backreserve.runasp.net
+export ANDROID_CMAKE_DIR="$ANDROID_HOME/cmake/3.31.6"            # Windows
+export BACKRESERVE_UPLOAD_STORE_FILE=C:/Users/TurkesMedin/keystore/backreserve/backreserve-upload.jks
+export BACKRESERVE_UPLOAD_KEY_ALIAS=backreserve-upload
+export BACKRESERVE_UPLOAD_STORE_PASSWORD=… BACKRESERVE_UPLOAD_KEY_PASSWORD=…   # from the password file
+npx expo prebuild --platform android --clean --no-install
+cd android && ./gradlew bundleRelease
+# → android/app/build/outputs/bundle/release/app-release.aab
+keytool -printcert -jarfile app/build/outputs/bundle/release/app-release.aab   # must show CN=Medin Turkes, not Android Debug
+```
+`android/` is generated and git-ignored. Bump `VERSION` / `BUILD_NUMBER` in `app.config.ts` for every upload.
+
 ## 10. Pre-submission checklist
 
-- [ ] Placeholders in section 1 replaced; production API reachable over HTTPS
-- [ ] Version / build number bumped
+- [x] Android package / link host / production API set (section 1); production API reachable over HTTPS
+- [ ] Remaining placeholders in section 1 (EAS project, ASC app id, legal pages, deletion URL)
+- [x] Version 1.0.0 / build 1 – signed Android AAB built and verified (see GOOGLE-PLAY-CONSOLE.md §2)
 - [ ] Tested on real devices: iPhone (current iOS), Android phone (Android 10+), one tablet; large font sizes; bright light
 - [ ] Customer flow end-to-end on production: reserve, confirmation e-mail link opens the app, cancel, reminder
 - [ ] Staff flow: login, tenant switch, "Heute", QR scan + manual entry, collect, "Problem melden", logout
 - [ ] Privacy policy, imprint, support page live and linked in both listings
 - [ ] Data safety form and App Privacy answers match section 6
-- [ ] Review account and notes entered
-- [ ] Screenshots and feature graphic uploaded
+- [x] Review account created (berkcan@gentlegroup.de, review bakery with sample data) – [ ] notes entered in the consoles
+- [x] Android screenshots, icon and feature graphic produced – [ ] uploaded
 - [ ] `assetlinks.json` / `apple-app-site-association` deployed and verified
 
-**Reminder: nothing has been submitted to any store yet.**
+**Reminder: nothing has been submitted to any store yet.** Play Console field-by-field checklist:
+`apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md`.

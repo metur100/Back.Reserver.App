@@ -31,7 +31,7 @@ export const env = {
   appEnv: (extra.appEnv ?? 'development') as AppEnv,
   // EXPO_PUBLIC_* variables are inlined at bundle time.
   apiUrl: resolveApiUrl({ envUrl: process.env.EXPO_PUBLIC_API_URL, extraUrl: extra.apiUrl }),
-  universalLinkHost: extra.universalLinkHost ?? 'app.backreserve.example',
+  universalLinkHost: extra.universalLinkHost ?? 'reserver-app.gentlegroup.de',
   easProjectId: extra.eas?.projectId ?? Constants.easConfig?.projectId ?? null,
   appVersion: Constants.expoConfig?.version ?? '1.0.0',
 };

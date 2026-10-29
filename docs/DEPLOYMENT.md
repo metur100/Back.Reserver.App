@@ -122,4 +122,4 @@ VITE_API_BASE_URL=https://api.backreserve.example npm run build
 - Configuration/secrets: documented in the secret store; JWT key loss only forces re-login, Data Protection key loss invalidates pending email confirmation/reset tokens and idempotency replays (keys live in the database backup).
 
 ## 7. Mobile app
-See `docs/STORE_RELEASE.md`. Set `EXPO_PUBLIC_API_URL=https://api.backreserve.example` for preview/production EAS builds.
+See `docs/STORE_RELEASE.md`. Preview/production builds use `EXPO_PUBLIC_API_URL=https://backreserve.runasp.net` (set in `eas.json`); Android package `com.certidevelopment.backreserve`, App Links host `reserver-app.gentlegroup.de`.

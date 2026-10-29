@@ -7,11 +7,11 @@ import type { ConfigContext, ExpoConfig } from 'expo/config';
  * The API base URL comes from EXPO_PUBLIC_API_URL; when it is not set in development the app picks a platform default
  * at runtime (Android emulator: http://10.0.2.2:5280, iOS simulator / web: http://localhost:5280), see src/config/env.ts.
  *
- * PLACEHOLDERS (replace before a real store release, see docs/STORE_RELEASE.md):
- *  - bundle identifier / Android package "de.backreserve.app"
- *  - universal-link domain "app.backreserve.example"
- *  - API hosts "*.backreserve.example"
- *  - EAS project id (EAS_PROJECT_ID)
+ * Store identity (see docs/STORE_RELEASE.md):
+ *  - bundle identifier / Android package "com.certidevelopment.backreserve" (preview/dev builds add ".preview" / ".dev")
+ *  - universal-link domain "reserver-app.gentlegroup.de" (the web app; override with env UNIVERSAL_LINK_HOST)
+ *  - production API "https://backreserve.runasp.net"
+ *  - EAS project id (EAS_PROJECT_ID) is not set yet
  */
 type AppEnv = 'development' | 'preview' | 'production';
 
@@ -25,8 +25,8 @@ const DEFAULT_API_URL: Record<AppEnv, string | null> = {
   production: 'https://backreserve.runasp.net',
 };
 
-const UNIVERSAL_LINK_HOST = process.env.UNIVERSAL_LINK_HOST ?? 'app.backreserve.example';
-const BUNDLE_ID = 'de.backreserve.app';
+const UNIVERSAL_LINK_HOST = process.env.UNIVERSAL_LINK_HOST ?? 'reserver-app.gentlegroup.de';
+const BUNDLE_ID = 'com.certidevelopment.backreserve';
 const VERSION = '1.0.0';
 const BUILD_NUMBER = 1;
 
@@ -116,6 +116,10 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
         mode: APP_ENV === 'production' ? 'production' : 'development',
       },
     ],
+    // Local release builds: upload-key signing from BACKRESERVE_UPLOAD_* (env / Gradle properties, never committed)
+    // and an optional newer CMake on Windows (ANDROID_CMAKE_DIR). Both are no-ops when the variables are not set.
+    './plugins/withAndroidReleaseSigning',
+    './plugins/withLocalCmakeDir',
   ],
   experiments: {
     typedRoutes: true,
