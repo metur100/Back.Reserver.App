@@ -106,7 +106,7 @@ Google Play listing graphics are in `apps/mobile/store-assets/android/`: `icon-5
 
 **App Review notes (Apple) / Zugangsdaten für die Prüfung (Google):**
 The staff area requires a login. Review account on the **production** system: `berkcan@gentlegroup.de` /
-`Runderbaum12` (owner of the review bakery “Bäckerei Berkcan”, slug `baeckerei-berkcan`, 2 locations, 40 products,
+(see GentleHub → project → Testfirma-Login) (owner of the review bakery “Bäckerei Berkcan”, slug `baeckerei-berkcan`, 2 locations, 40 products,
 sample orders in every status; details in `GOOGLE-PLAY-CONSOLE.md` §7). The customer flow needs no account. Explain that payment happens in the shop (no digital goods → no IAP required).
 Accounts are not created in the app (bakeries register on the web, staff are invited), therefore the in-app account
 deletion requirement (App Store Guideline 5.1.1(v)) does not apply; still link an account-deletion request page in the

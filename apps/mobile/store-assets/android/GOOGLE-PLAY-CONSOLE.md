@@ -213,7 +213,7 @@ https://reserver.gentlegroup.de/datenschutz.html
 |---|---|
 | Name | `Bäckerei-Team / Bakery staff` |
 | Username | `berkcan@gentlegroup.de` |
-| Password | `Runderbaum12` |
+| Password | (see GentleHub → project → Testfirma-Login) |
 | Any other information | see text below |
 
 ```text
@@ -311,8 +311,8 @@ Created on 2026-10-29 through the normal registration flow on the production API
 | | |
 |---|---|
 | Bakery | “Bäckerei Berkcan”, slug `baeckerei-berkcan`, published |
-| Owner login | `berkcan@gentlegroup.de` / `Runderbaum12` |
-| Staff logins (accepted invitations, same password `Runderbaum12`) | `leitung@example.com` (Manager, both locations) · `verkauf.lindenstrasse@example.com` (Staff, Stammhaus) · `verkauf.bilk@example.com` (Staff, Filiale) |
+| Owner login | `berkcan@gentlegroup.de` / (see GentleHub → project → Testfirma-Login) |
+| Staff logins (accepted invitations, same password (see GentleHub → project → Testfirma-Login)) | `leitung@example.com` (Manager, both locations) · `verkauf.lindenstrasse@example.com` (Staff, Stammhaus) · `verkauf.bilk@example.com` (Staff, Filiale) |
 | Locations | Stammhaus Lindenstraße (Mo–Fr 7–18, Sa 7–12:30, So 8–11 pickup) · Filiale Bilker Allee (Mo–Fr 7:30–17:30, Sa 8–12:30, So closed) |
 | Catalog | 8 categories, 40 products with prices, allergens, ingredients, labels and images; daily inventory for 14 days per location (some items limited/sold out, seasonal stollen unavailable until 1 Nov) |
 | Orders | 37 orders from 25 Oct to 2 Nov in every status (new, in preparation, ready, collected, cancelled by customer/bakery, no-show, pickup problems noted), all with `@example.com` customer addresses |
