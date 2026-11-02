@@ -6,6 +6,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import { z } from 'zod';
 import { errorMessage } from '@/api/errors';
 import { useAuth } from '@/auth/AuthContext';
+import { LegalLinks } from '@/components/LegalLinks';
 import { AppText, Button, Card, Icon, Notice, Screen, TextField } from '@/components/ui';
 import { de } from '@/i18n/de';
 import { colors, spacing } from '@/theme';
@@ -114,6 +115,7 @@ export default function LoginScreen() {
         </AppText>
         <Button label={de.auth.toCustomer} variant="ghost" icon="storefront" onPress={() => router.dismissTo('/')} />
       </View>
+      <LegalLinks />
     </Screen>
   );
 }

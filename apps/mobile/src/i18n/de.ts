@@ -392,6 +392,15 @@ export const de = {
     title: 'Seite nicht gefunden',
     text: 'Dieser Link führt leider ins Leere.',
   },
+  legal: {
+    title: 'Rechtliches & Hilfe',
+    privacy: 'Datenschutz',
+    imprint: 'Impressum',
+    support: 'Hilfe & Kontakt',
+    deleteAccount: 'Konto löschen',
+    deleteAccountHint: 'Wie du dein Team-Konto löschen lässt und welche Daten gelöscht werden.',
+    a11y: (label: string) => `${label} (öffnet die Website)`,
+  },
   offline: 'Offline – keine Internetverbindung',
 };
 

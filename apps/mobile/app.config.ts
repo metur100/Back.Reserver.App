@@ -28,7 +28,7 @@ const DEFAULT_API_URL: Record<AppEnv, string | null> = {
 const UNIVERSAL_LINK_HOST = process.env.UNIVERSAL_LINK_HOST ?? 'reserver-app.gentlegroup.de';
 const BUNDLE_ID = 'com.certidevelopment.backreserve';
 const VERSION = '1.0.0';
-const BUILD_NUMBER = 2;
+const BUILD_NUMBER = 3;
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,
@@ -55,6 +55,32 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       CFBundleDevelopmentRegion: 'de',
       CFBundleLocalizations: ['de'],
     },
+    privacyManifests: {
+      NSPrivacyTracking: false,
+      NSPrivacyTrackingDomains: [],
+      // Must match the App Store Connect "App Privacy" answers (store-assets/ios/APP-STORE-CONNECT.md, section 7):
+      // reservation contact data and orders (customers), sign-in data (staff); linked, no tracking, App Functionality.
+      NSPrivacyCollectedDataTypes: [
+        'NSPrivacyCollectedDataTypeName',
+        'NSPrivacyCollectedDataTypeEmailAddress',
+        'NSPrivacyCollectedDataTypePhoneNumber',
+        'NSPrivacyCollectedDataTypePurchaseHistory',
+        'NSPrivacyCollectedDataTypeOtherUserContent',
+        'NSPrivacyCollectedDataTypeUserID',
+      ].map((type) => ({
+        NSPrivacyCollectedDataType: type,
+        NSPrivacyCollectedDataTypeLinked: true,
+        NSPrivacyCollectedDataTypeTracking: false,
+        NSPrivacyCollectedDataTypePurposes: ['NSPrivacyCollectedDataTypePurposeAppFunctionality'],
+      })),
+      // Required-reason APIs used by React Native / Expo modules (https://docs.expo.dev/guides/apple-privacy/).
+      NSPrivacyAccessedAPITypes: [
+        { NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryUserDefaults', NSPrivacyAccessedAPITypeReasons: ['CA92.1'] },
+        { NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryFileTimestamp', NSPrivacyAccessedAPITypeReasons: ['C617.1'] },
+        { NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategorySystemBootTime', NSPrivacyAccessedAPITypeReasons: ['35F9.1'] },
+        { NSPrivacyAccessedAPIType: 'NSPrivacyAccessedAPICategoryDiskSpace', NSPrivacyAccessedAPITypeReasons: ['E174.1'] },
+      ],
+    },
   },
   android: {
     package: APP_ENV === 'production' ? BUNDLE_ID : `${BUNDLE_ID}.${APP_ENV === 'preview' ? 'preview' : 'dev'}`,
@@ -65,7 +91,8 @@ export default ({ config }: ConfigContext): ExpoConfig => ({
       backgroundColor: '#B5562B',
     },
     permissions: ['android.permission.CAMERA', 'android.permission.POST_NOTIFICATIONS'],
-    blockedPermissions: ['android.permission.RECORD_AUDIO'],
+    // SYSTEM_ALERT_WINDOW is only needed by the React Native dev menu (debug manifest); the app never draws overlays.
+    blockedPermissions: ['android.permission.RECORD_AUDIO', 'android.permission.SYSTEM_ALERT_WINDOW'],
     predictiveBackGestureEnabled: false,
     intentFilters: [
       {

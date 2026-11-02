@@ -12,6 +12,7 @@ import { queryKeys } from '@/api/queryKeys';
 import type { CreateOrderRequest, PublicProductDto } from '@/api/types';
 import { lineTotalCents, toOrderItems, type BasketChange } from '@/basket/basket';
 import { useBasket } from '@/basket/useBasket';
+import { LegalLinks } from '@/components/LegalLinks';
 import { InfoRow, StepIndicator } from '@/components/OrderParts';
 import { ProductImage } from '@/components/ProductImage';
 import { QuantityStepper } from '@/components/QuantityStepper';
@@ -508,6 +509,7 @@ export default function CheckoutScreen() {
                   <Checkbox checked={field.value} onChange={field.onChange} label={de.checkout.terms} error={fieldState.error?.message} testID="accept-terms" />
                 )}
               />
+              <LegalLinks links={['privacy']} center={false} />
             </>
           ) : null}
 

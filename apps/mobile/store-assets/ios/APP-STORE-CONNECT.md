@@ -13,17 +13,11 @@ block in this file in Unicode code points). Results are in §10.
 Related: [docs/STORE_RELEASE.md](../../../../docs/STORE_RELEASE.md) (privacy rationale §6, push §7, Universal Links §8,
 checklist §10).
 
-> **Before submitting for review:**
-> 1. Privacy policy and imprint on `reserver.gentlegroup.de` are **placeholders** (HTTP 200, content "[Angaben werden
->    ergänzt]"). Apple checks the privacy policy URL.
-> 2. There is **no support/contact page** on the landing site (`/support.html` → 404, the start page has no contact
->    details). App Store Connect requires a Support URL that leads to contact information – add a support/contact page
->    (repo `metur100/Back.Reserver.Landing`) and enter it below instead of the interim start page.
-> 3. Guideline 5.1.1(i) expects the privacy policy to be reachable **inside the app** as well; the app currently only
->    mentions "Datenschutzhinweise" in the checkout consent text without a link. Add a link (e.g. on the start screen
->    and next to the checkout consent) in the next build.
-> 4. `apple-app-site-association` is not deployed on `reserver-app.gentlegroup.de` yet (STORE_RELEASE.md §8); not a
->    review blocker.
+> **Status 2026-11-02:** privacy policy, imprint, support page and account-deletion page on `reserver.gentlegroup.de`
+> are complete (operator Berk-Can Atesoglu (Gentle Group Studios), Girardetstraße 17, 42109 Wuppertal, +49 175 4701892, office@gentlegroup.de). From build 3 on the app links the privacy policy and imprint on the start screen,
+> at checkout and on the team sign-in, and privacy/imprint/help/account deletion under Team → Konto (5.1.1(i)); the
+> privacy manifest (`ios.privacyManifests`) matches §7. Still open: `apple-app-site-association` on
+> `reserver-app.gentlegroup.de` (STORE_RELEASE.md §8) – not a review blocker.
 
 ## 1. New app (Apps → + → New App)
 
@@ -46,7 +40,7 @@ Then put the numeric Apple ID of the app into `apps/mobile/eas.json` → `submit
 | Category | Primary **Food & Drink**, secondary **Shopping** |
 | Content rights | "Does your app contain, show, or access third-party content?" → **Yes** – product names, photos, prices and allergen data are supplied by the bakeries that use BackReserve; confirm that you have the rights (granted by the bakeries under the BackReserve terms – make sure the published terms say so) |
 | Age rating | see §6 (expected result **4+**) |
-| EU Digital Services Act | **Trader** – name, address, e-mail, phone are shown on the EU storefronts. Use the same data as the Impressum once its placeholder is filled in |
+| EU Digital Services Act | **Trader** – name, address, e-mail, phone are shown on the EU storefronts. Must match the developer account; the Impressum names Berk-Can Atesoglu (Gentle Group Studios), Girardetstraße 17, 42109 Wuppertal, +49 175 4701892, office@gentlegroup.de – owner to align |
 | License agreement | Apple standard EULA |
 
 ### de-DE
@@ -134,9 +128,9 @@ Kein Tracking, keine Werbung, keine Analyse-Tools. Wir verarbeiten nur die Daten
 BackReserve ist ein Service für lokale Bäckereien. Produkte, Preise, Abholzeiten und Allergenangaben stammen von der jeweiligen Bäckerei.
 ```
 
-Support URL (interim – replace with a support/contact page, see the note at the top):
+Support URL:
 ```text
-https://reserver.gentlegroup.de/
+https://reserver.gentlegroup.de/support.html
 ```
 
 Marketing URL:
@@ -250,11 +244,12 @@ STAFF FLOW (sign-in required)
 Start screen > "Zum Team-Bereich" > sign in with the demo account above (owner of the demo bakery, e-mail + password, no 2FA).
 - "Heute": today's orders grouped by pickup time; open an order to prepare it, mark it ready or report a pickup problem.
 - "Abholung": enter a pickup code from the list (format BR-XXXXXX) or scan a customer's QR code. The camera is used only for this scan; frames are processed on the device and never stored or uploaded.
-- "Konto": bakery, role, sign out.
+- "Konto": bakery, role, links to privacy policy, imprint, help and account deletion, sign out.
 Please do not cancel or delete the demo bakery's data; placing additional test orders is fine.
 
 OTHER NOTES
-- Accounts cannot be created in the app: bakeries register on the web and invite their staff there, so there is no in-app sign-up. Staff accounts are removed by the bakery owner on the web or on request via certidevelopment@gmail.com.
+- Accounts cannot be created in the app: bakeries register on the web and invite their staff there, so there is no in-app sign-up. Staff accounts can be deactivated by the bakery owner on the web and are deleted on request (office@gentlegroup.de); how is described on https://reserver.gentlegroup.de/konto-loeschen.html, linked in the app under Konto > "Konto löschen".
+- The privacy policy and imprint are linked on the start screen, next to the checkout consent, on the team sign-in and under Konto.
 - No ads, no tracking, no analytics SDKs. Push notifications for staff are not active yet (no server component); customer reminders are local notifications.
 - The UI is German only.
 - Backend: https://backreserve.runasp.net (production).
@@ -268,7 +263,7 @@ Apple's age-rating questionnaire (current version with 13+/16+/18+ tiers). Answe
 |---|---|---|
 | Features | Parental controls | No |
 | | Age assurance | No |
-| | Unrestricted web access | No – the app has no browser; it only opens `tel:` / `mailto:` links and the system settings |
+| | Unrestricted web access | No – the app has no browser; it only opens `tel:` / `mailto:` links, the system settings and the BackReserve legal/help pages in the system browser |
 | | User-generated content (shared with other users/the public) | No – a reservation and its optional note go only to the bakery; nothing is published |
 | | Messaging and chat | No |
 | | Advertising | No |
@@ -302,19 +297,20 @@ Messages, Photos or Videos (camera frames stay on the device), Audio, Browsing/S
 Diagnostics, Device ID (the Expo push token is not sent to any server in 1.0.0 – revisit when server push is added),
 Advertising Data, Other Data. Tracking: **No**.
 
-Privacy manifest: `app.config.ts` does not declare `ios.privacyManifests` yet; the Expo SDK 57 modules ship their own
-`PrivacyInfo.xcprivacy` (required-reason APIs). **Before the first iOS build** add `ios.privacyManifests` with
-`NSPrivacyTracking: false` and `NSPrivacyCollectedDataTypes` for Name, Email Address, Phone Number, Purchase History,
-Other User Content and User ID (linked, not tracking, purpose App Functionality) so the manifest matches the answers
-above, and check App Store Connect's validation e-mail after the first upload for missing required reasons.
+Privacy manifest: `app.config.ts` declares `ios.privacyManifests` (since build 3) with `NSPrivacyTracking: false` and
+`NSPrivacyCollectedDataTypes` Name, Email Address, Phone Number, Purchase History, Other User Content and User ID
+(linked, not tracking, App Functionality) – matching the answers above – plus the required-reason APIs UserDefaults
+(CA92.1), FileTimestamp (C617.1), SystemBootTime (35F9.1) and DiskSpace (E174.1) following Expo's pattern
+(<https://docs.expo.dev/guides/apple-privacy/>); the Expo SDK 57 modules also ship their own `PrivacyInfo.xcprivacy`.
+Check App Store Connect's validation e-mail after the first upload for missing required reasons.
 
 ## 8. Compliance items
 
 | Topic | Answer / implementation | Status |
 |---|---|---|
 | Export compliance | Only standard HTTPS through the OS → exempt. `ITSAppUsesNonExemptEncryption: false` is set in `app.config.ts`, so App Store Connect does not ask per build | set |
-| Account deletion (5.1.1(v)) | Not applicable – accounts cannot be created in the app (see review notes). Deletion on request via `certidevelopment@gmail.com` / bakery owner; publish a deletion page (see top) | page missing |
-| Privacy policy in the app (5.1.1(i)) | Not linked in the app yet | **open – next build** |
+| Account deletion (5.1.1(v)) | Not applicable – accounts cannot be created in the app (see review notes). Deletion on request via `office@gentlegroup.de`; page `https://reserver.gentlegroup.de/konto-loeschen.html`, linked in the app under Konto | page live |
+| Privacy policy in the app (5.1.1(i)) | Linked on the start screen, at checkout, on the team sign-in and under Konto (`src/components/LegalLinks.tsx`) | set (build 3) |
 | Camera permission text | `NSCameraUsageDescription`: "BackReserve verwendet die Kamera nur, um Abholcodes (QR-Codes) von Reservierungen an der Theke zu scannen." | set |
 | Notifications | Requested in context only (reminder button; staff "Gerät registrieren"). No server push in 1.0.0 | set |
 | Tracking (ATT) | not used | – |
@@ -340,4 +336,4 @@ above, and check App Store Connect's validation e-mail after the first upload fo
 | Keywords (comma-separated, no spaces after commas) | 100 | 97 | 95 |
 | Description | 4000 | 2049 | 1855 |
 | What's New example (shared) | 4000 | 80 | – |
-| Review notes (shared, English) | 4000 | 2074 | – |
+| Review notes (shared, English) | 4000 | 2402 | – |

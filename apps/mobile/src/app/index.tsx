@@ -3,6 +3,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { LegalLinks } from '@/components/LegalLinks';
 import { AppText, Button, Card, Icon, Screen, TextField } from '@/components/ui';
 import { de } from '@/i18n/de';
 import { useSavedOrders } from '@/orders/useSavedOrders';
@@ -121,6 +122,8 @@ export default function HomeScreen() {
           <AppText variant="caption">{de.home.staffHint}</AppText>
           <Button label={de.home.staffLogin} variant="secondary" icon="log-in" onPress={() => router.push('/team')} testID="staff-entry" />
         </Card>
+
+        <LegalLinks links={['privacy', 'imprint', 'support']} />
       </Screen>
     </SafeAreaView>
   );

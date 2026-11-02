@@ -10,7 +10,7 @@ block in this file; results in §8). The App Store counterpart is
 |---|---|
 | Package name | `com.certidevelopment.backreserve` |
 | Developer | Medin Turkes · Certi Development (same developer account as AngebotPilot) |
-| Version | versionName `1.0.0`, versionCode `2` (built from `main` on 2026-11-02) |
+| Version | versionName `1.0.0`, versionCode `2` (built from `main` on 2026-11-02); **next upload: versionCode `3`** (`BUILD_NUMBER = 3` in `app.config.ts`, adds the in-app legal links and blocks `SYSTEM_ALERT_WINDOW`; AAB not built yet) |
 | Default language | German – de-DE. The app UI is **German only** (`src/i18n/de.ts`); an en-US listing translation is optional (texts below) |
 | App or game | App · Free · no in-app purchases (customers pay in the bakery; bakeries' subscriptions are not sold via Play) |
 | Backend | production API `https://backreserve.runasp.net`, web app `https://reserver-app.gentlegroup.de` |
@@ -18,18 +18,17 @@ block in this file; results in §8). The App Store counterpart is
 Related docs: [docs/STORE_RELEASE.md](../../../../docs/STORE_RELEASE.md) (privacy rationale §6, build steps §9,
 pre-submission checklist §10).
 
-> **Blocking before production (and strongly recommended before any review):**
-> 1. `https://reserver.gentlegroup.de/datenschutz.html` and `/impressum.html` answer 200 but are still
->    **placeholders** ("Platzhalter … [Angaben werden ergänzt]"). Google reviews the privacy policy URL – it must name
->    the controller, describe the app's data (STORE_RELEASE.md §6) and be reachable without login.
-> 2. There is **no account/data deletion page** yet (no `#loeschung` section, no `konto-loeschen.html`). Add one to
->    the landing site (repo `metur100/Back.Reserver.Landing`) explaining how customers and staff request deletion
->    (e-mail to `certidevelopment@gmail.com` or via the bakery owner), then enter its URL in §5.
-> 3. `/.well-known/assetlinks.json` on `reserver-app.gentlegroup.de` returns 404, so App Links (`autoVerify`) do not
->    verify; https links from confirmation e-mails open in the browser instead of the app. Add it after the first
->    upload with the **Play App Signing** SHA-256 (STORE_RELEASE.md §8). Not a review blocker.
-> 4. The review bakery's daily inventory runs until **2026-11-11** (no products from 2026-11-12 on) and its trial
->    ends **2026-11-28** – extend both in the web dashboard before review / the closed test (see §7).
+> **Status 2026-11-02 (after the store-readiness fixes):**
+> - Privacy policy, imprint, account-deletion page and support page on `reserver.gentlegroup.de` are complete (operator
+>   Berk-Can Atesoglu (Gentle Group Studios), Girardetstraße 17, 42109 Wuppertal, +49 175 4701892, office@gentlegroup.de); no placeholders left.
+> - The app links privacy policy and imprint on the start screen, at checkout and on the team sign-in, plus
+>   privacy/imprint/help/account deletion under Team → Konto. These changes ship with **versionCode 3** (not built yet –
+>   rebuild the AAB and recapture screenshots before uploading; the versionCode 2 AAB below lacks them).
+> - Review bakery: daily inventory extended to **2027-01-31**; its trial date (2026-11-28) cannot be changed through the
+>   product (see §7) – the date is shown only and not enforced by the backend.
+> - Still open: `/.well-known/assetlinks.json` on `reserver-app.gentlegroup.de` returns 404, so App Links (`autoVerify`)
+>   do not verify; add it after the first upload with the **Play App Signing** SHA-256 (STORE_RELEASE.md §8). Not a
+>   review blocker.
 >
 > Internal testing can start right away.
 
@@ -56,7 +55,7 @@ pre-submission checklist §10).
 | Upload certificate SHA-256 | `38:44:AF:DF:3D:BE:18:5C:D8:15:69:C1:35:CC:70:B8:22:6D:A3:4B:B4:D5:F2:DB:75:8A:F7:8D:98:91:C6:FD` |
 | AAB SHA-256 | `d32ff78ea8cbea0d4960c8c6e0712d6e576a0644ae1b677456ffb525f96eadb3` (89,577,536 bytes, built 2026-11-02) |
 | Verification | `jarsigner -verify` → "jar verified"; signer certificate SHA-256 = keystore entry above; `applicationId` `com.certidevelopment.backreserve`, label `BackReserve`; JS bundle contains `https://backreserve.runasp.net` and no `localhost` / `10.0.2.2` |
-| Manifest | minSdk 24 · targetSdk 36 · App Links host `reserver-app.gentlegroup.de` · no `AD_ID`. Permissions: INTERNET, ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE, CAMERA (QR scan), POST_NOTIFICATIONS, VIBRATE, RECEIVE_BOOT_COMPLETED, WAKE_LOCK, USE_BIOMETRIC/USE_FINGERPRINT (expo-secure-store), c2dm RECEIVE (expo-notifications), launcher-badge permissions, READ/WRITE_EXTERNAL_STORAGE (maxSdk 32), SYSTEM_ALERT_WINDOW merged in from a library – consider blocking it via `android.blockedPermissions` in a later build (no Play declaration is required for it) |
+| Manifest | minSdk 24 · targetSdk 36 · App Links host `reserver-app.gentlegroup.de` · no `AD_ID`. Permissions: INTERNET, ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE, CAMERA (QR scan), POST_NOTIFICATIONS, VIBRATE, RECEIVE_BOOT_COMPLETED, WAKE_LOCK, USE_BIOMETRIC/USE_FINGERPRINT (expo-secure-store), c2dm RECEIVE (expo-notifications), launcher-badge permissions, READ/WRITE_EXTERNAL_STORAGE (maxSdk 32), SYSTEM_ALERT_WINDOW merged in from a library – **blocked** via `android.blockedPermissions` from versionCode 3 on (the app never draws overlays) |
 
 - **Older bundle** `backreserve-1.0.0-1-release.aab` (versionCode 1, 2026-10-29) was never uploaded – do not upload it;
   versionCode 1 is simply skipped.
@@ -211,7 +210,7 @@ same captions). No video. Play rejects screenshots whose long side is more than 
 | Tags (up to 5 from Play's list) | choose the closest available, e.g. Food ordering, Bakery, Local, Shopping |
 | Email address | `certidevelopment@gmail.com` |
 | Phone | leave empty (optional) |
-| Website | `https://reserver.gentlegroup.de/` (HTTP 200, checked 2026-11-02) |
+| Website | `https://reserver.gentlegroup.de/` (HTTP 200, checked 2026-11-02); help/contact page: `https://reserver.gentlegroup.de/support.html` |
 | External marketing | your choice (default on) |
 
 ## 5. App content (Policy → App content)
@@ -220,7 +219,7 @@ same captions). No video. Play rejects screenshots whose long side is more than 
 ```text
 https://reserver.gentlegroup.de/datenschutz.html
 ```
-(HTTP 200, but placeholder content – see the blocking note at the top.)
+(HTTP 200; complete privacy policy since 2026-11-02, also linked inside the app from versionCode 3 on.)
 
 ### Ads
 **No, my app does not contain ads.**
@@ -273,7 +272,7 @@ From STORE_RELEASE.md §6 (re-check against the final privacy policy):
 | Does your app collect or share any of the required user data types? | **Yes** |
 | Is all of the user data collected by your app encrypted in transit? | **Yes** (release builds talk HTTPS only) |
 | Which account creation methods does your app support? | Staff log in with username (e-mail) + password; accounts are created on the web (bakery registration / staff invitation), **not** in the app. Customers need no account. |
-| Do you provide a way for users to request that their data be deleted? | **Yes** – deletion request URL (to be published, see top) and e-mail `certidevelopment@gmail.com`; customers can also ask their bakery |
+| Do you provide a way for users to request that their data be deleted? | **Yes** – `https://reserver.gentlegroup.de/konto-loeschen.html` (e-mail request to `office@gentlegroup.de`); customers can also ask their bakery |
 
 Data types (all: Collected = **yes**, Shared = **no** – the bakery is the service the user orders from, our processing
 is on its behalf; Processed ephemerally = **no**):
@@ -292,13 +291,15 @@ or other IDs (the Expo push token is created on the device only and not sent to 
 to *Device or other IDs* once server push is added). No data is used for advertising or tracking.
 
 ### Account deletion
-Delete account URL (to be created – see the blocking note at the top), e.g.:
+Delete account URL:
 ```text
-https://reserver.gentlegroup.de/datenschutz.html#loeschung
+https://reserver.gentlegroup.de/konto-loeschen.html
 ```
-Accounts cannot be created in the app; staff accounts are deleted by the bakery owner (remove the team member on the
-web) or on request via `certidevelopment@gmail.com`; customer data is deleted by the bakery's retention setting or on
-request.
+Accounts cannot be created in the app. Staff/bakery accounts are deleted on request (e-mail to `office@gentlegroup.de`,
+processed manually by the operator – there is no self-service deletion endpoint); the bakery owner can also deactivate a
+team member on the web. Customers have no account: their contact data is anonymised by the bakery's retention setting
+(default 365 days after pickup) or earlier on request. In the app the page is linked under Team → Konto → "Konto
+löschen" (versionCode 3).
 
 ### Government apps
 **No.**
@@ -317,8 +318,8 @@ Not applicable. Camera is requested at runtime for QR scanning only (staff), whi
 `RECORD_AUDIO` is explicitly blocked. Customer reminders are ordinary (inexact) local notifications.
 
 ### EU Digital Services Act – trader status
-**I'm a trader** (business). The trader details (name, address, e-mail, phone) are shown publicly – use the same data
-as in the Impressum once its placeholder is filled in.
+**I'm a trader** (business). The trader details (name, address, e-mail, phone) are shown publicly and must match the
+developer account. The Impressum names Berk-Can Atesoglu (Gentle Group Studios), Girardetstraße 17, 42109 Wuppertal, +49 175 4701892, office@gentlegroup.de – owner to align with the Play developer account.
 
 ## 6. Pricing and distribution
 - Free. Countries: start with **Germany** (the UI and bakeries are German); add Austria/Switzerland later if needed.
@@ -334,9 +335,9 @@ Created on 2026-10-29 through the normal registration flow on the production API
 | Owner login | `berkcan@gentlegroup.de` / (see GentleHub → project → Testfirma-Login) |
 | Staff logins (accepted invitations, same password – see GentleHub) | `leitung@example.com` (Manager, both locations) · `verkauf.lindenstrasse@example.com` (Staff, Stammhaus) · `verkauf.bilk@example.com` (Staff, Filiale) |
 | Locations | Stammhaus Lindenstraße (Mo–Fr 7–18, Sa 7–12:30, So 8–11 pickup) · Filiale Bilker Allee (Mo–Fr 7:30–17:30, Sa 8–12:30, So closed) |
-| Catalog | 8 categories, 40 products with prices, allergens, ingredients, labels and images; daily inventory per location **until 2026-11-11** – extend it before review |
+| Catalog | 8 categories, 40 products with prices, allergens, ingredients, labels and images; daily inventory per location **until 2027-01-31** (extended on 2026-11-02 with the dashboard's own "Tag kopieren" endpoint `POST /api/v1/admin/inventory/copy-day`, logged in as the review owner: each day 2026-11-12 … 2027-01-31 copied from the same weekday of 2026-11-05 … 11, `overwrite: false`; 81 days × 2 locations, 6,480 product-day rows, no other data touched) |
 | Orders | 37 orders from 25 Oct to 2 Nov (2026-10-29), plus on 2026-11-02 for the screenshots: 6 orders for 2 Nov at Stammhaus (Lena Wagner, Thomas Becker, Fatma Yilmaz, Jonas Schmidt, Marie Klein, Peter Neumann – all `@example.com`) and 2 orders placed through the app on the emulator for the screenshots (Anna Berger, `anna.berger@example.com`: `BR-SNGQEN` 3 Nov 08:00 Stammhaus, set to "In Vorbereitung"; `BR-ZQE5BU` 5 Nov 10:00 Filiale); statuses advanced in the demo bakery only. All customer addresses are `@example.com` |
-| Subscription | trial of the *Multi-Location* plan (set in the DB, needed for 2 locations) – ends **2026-11-28**; extend it before then if review or the closed test runs longer |
+| Subscription | trial of the *Multi-Location* plan (set in the DB, needed for 2 locations) – `trialEndsAt` **2026-11-28**. There is no supported way to change it (the only plan endpoint is development-only, the platform admin can only suspend/reactivate). The backend does **not** enforce `trialEndsAt` (it is only displayed in the web settings), so the bakery keeps working after that date. Changing the date would need a platform-admin endpoint (or an owner-run SQL update) |
 
 Do not use it for real customer data. Reviewers may place additional test orders; that is fine.
 

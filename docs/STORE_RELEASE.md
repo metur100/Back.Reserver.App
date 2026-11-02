@@ -8,8 +8,10 @@
 > iOS: listing texts, review notes, age rating / privacy answers and iPhone 6.9" / 6.3" / iPad 13" screenshots are in
 > [`apps/mobile/store-assets/ios/APP-STORE-CONNECT.md`](../apps/mobile/store-assets/ios/APP-STORE-CONNECT.md); no iOS
 > build exists yet (EAS Build needed, no Mac).
-> Still open: real privacy policy / imprint (placeholders), account-deletion page and support/contact page on the
-> landing site, privacy-policy link inside the app (Apple 5.1.1(i)), Play Console / App Store Connect app records,
+> Done on 2026-11-02 (ships with versionCode/build 3, not built yet): complete privacy policy and imprint, account
+> deletion page and support page on the landing site; privacy/imprint links inside the app (Apple 5.1.1(i));
+> `ios.privacyManifests`; `SYSTEM_ALERT_WINDOW` blocked; review bakery inventory extended to 2027-01-31.
+> Still open: rebuild the AAB (versionCode 3) and recapture screenshots, Play Console / App Store Connect app records,
 > `assetlinks.json` / `apple-app-site-association`, EAS project, push.
 
 The app is an Expo (SDK 57) / React Native app in `apps/mobile` with Expo Router. It is used by **customers**
@@ -29,10 +31,10 @@ record pickups by code or QR scan). It talks to the same BackReserve API as the 
 | EAS project id / owner | env `EAS_PROJECT_ID`, `EAS_OWNER` (read in `app.config.ts`) | **not set** |
 | App Store Connect app id | `eas.json` → `submit.production.ios.ascAppId` | **placeholder** `REPLACE_WITH_APP_STORE_CONNECT_APP_ID` |
 | Website / marketing URL | Store listings | `https://reserver.gentlegroup.de/` (landing page, repo `metur100/Back.Reserver.Landing`; HTTP 200 on 2026-11-02) |
-| Privacy policy URL | Store listings | `https://reserver.gentlegroup.de/datenschutz.html` – HTTP 200, **page content is still a placeholder** |
-| Imprint (Impressum) | Store listings (required for German publishers) | `https://reserver.gentlegroup.de/impressum.html` – HTTP 200, **page content is still a placeholder** |
-| Account/data deletion URL | Play Data safety | **missing** – add `#loeschung` to the privacy page (or a separate page) |
-| Support URL | App Store Connect (required) | **missing** – no support/contact page (`/support.html` → 404); interim: the start page |
+| Privacy policy URL | Store listings | `https://reserver.gentlegroup.de/datenschutz.html` – complete (2026-11-02), linked in the app |
+| Imprint (Impressum) | Store listings (required for German publishers) | `https://reserver.gentlegroup.de/impressum.html` – complete (operator Berk-Can Atesoglu, Gentle Group Studios, Wuppertal) |
+| Account/data deletion URL | Play Data safety | `https://reserver.gentlegroup.de/konto-loeschen.html` (linked in the app under Team → Konto) |
+| Support URL | App Store Connect (required) | `https://reserver.gentlegroup.de/support.html` |
 | Support e-mail | Store listings | `certidevelopment@gmail.com` (developer account contact) |
 
 Release builds only talk to **HTTPS** APIs: Android release builds block cleartext HTTP and iOS ATS blocks it as well.
@@ -45,8 +47,8 @@ Release builds only talk to **HTTPS** APIs: Android release builds block clearte
 - `VERSION` (user-visible, e.g. `1.0.1`) → `version` on both platforms
 - `BUILD_NUMBER` (integer, must increase for every upload) → iOS `buildNumber` and Android `versionCode`
 
-Current: `VERSION = '1.0.0'`, `BUILD_NUMBER = 2` (versionCode 1 was built on 2026-10-29 but never uploaded; the
-2026-11-02 bundle uses 2). Signed bundles are kept next to the key as
+Current: `VERSION = '1.0.0'`, `BUILD_NUMBER = 3` (versionCode 1 was built on 2026-10-29 but never uploaded; the
+2026-11-02 bundle uses 2; 3 is for the next bundle with the in-app legal links). Signed bundles are kept next to the key as
 `C:\Users\TurkesMedin\keystore\backreserve\backreserve-<version>-<versionCode>-release.aab`.
 
 (Alternatively switch to `"appVersionSource": "remote"` with `"autoIncrement": true` for the production profile.)
@@ -142,7 +144,7 @@ No analytics SDK, no advertising, no tracking, no location, no contacts, no phot
       service the user orders from / data processor; no sale or advertising)
 - [ ] Data encrypted in transit: **Yes** (HTTPS only in release builds)
 - [ ] Users can request deletion: **Yes** – provide a deletion request URL/e-mail (customers: via the bakery or
-      support; staff accounts: via bakery owner or support). Planned URL: `https://reserver.gentlegroup.de/datenschutz.html#loeschung` (section not written yet)
+      support; staff accounts: via bakery owner or support). URL: `https://reserver.gentlegroup.de/konto-loeschen.html`
 - [ ] Personal info → **Name**: collected, required, purpose *App functionality* (and *Account management* for staff)
 - [ ] Personal info → **Email address**: collected, required, *App functionality*, *Account management*, *Developer communications* (order confirmation)
 - [ ] Personal info → **Phone number**: collected, optional (unless the bakery requires it), *App functionality*
@@ -164,9 +166,8 @@ No analytics SDK, no advertising, no tracking, no location, no contacts, no phot
   - Identifiers → User ID (staff accounts only) – *App Functionality*
 - [ ] **Data Not Linked to You:** none
 - [ ] Not collected: Location, Contacts, Photos or Videos (camera frames processed on device only), Health, Financial Info (no payment data), Browsing/Search History, Diagnostics, Usage Data
-- [ ] Privacy manifest: Expo SDK 57 modules ship their `PrivacyInfo.xcprivacy`; AsyncStorage/SecureStore use
-      "required reason" APIs (`UserDefaults`, file timestamps) – verify the generated manifest in the iOS build and add
-      reasons under `ios.privacyManifests` in `app.config.ts` if App Store Connect reports missing ones.
+- [x] Privacy manifest: `ios.privacyManifests` in `app.config.ts` declares the collected data types above and the
+      required-reason APIs (UserDefaults, file timestamps, boot time, disk space); verify after the first iOS upload.
 - [ ] Export compliance: `ITSAppUsesNonExemptEncryption = false` is set (only standard HTTPS/OS encryption).
 
 Permission texts (German, in `app.config.ts`):
@@ -308,12 +309,12 @@ The running app shows the API it talks to under Team-Bereich → Konto ("Server:
 - [x] Android package / link host / production API set (section 1); production API reachable over HTTPS
 - [ ] Remaining placeholders in section 1 (EAS project, ASC app id, legal pages, deletion URL, support URL)
 - [x] Version 1.0.0 / build 2 – signed Android AAB built and verified 2026-11-02 (see GOOGLE-PLAY-CONSOLE.md §2)
-- [ ] Privacy policy linked inside the app (Apple 5.1.1(i)) and `ios.privacyManifests` declared (APP-STORE-CONNECT.md §7)
-- [ ] Review bakery inventory extended beyond 2026-11-11 and its trial beyond 2026-11-28
+- [x] Privacy policy linked inside the app (Apple 5.1.1(i)) and `ios.privacyManifests` declared (APP-STORE-CONNECT.md §7) – build 3
+- [x] Review bakery inventory extended to 2027-01-31 – [ ] trial date 2026-11-28 unchanged (no supported way; not enforced by the backend)
 - [ ] Tested on real devices: iPhone (current iOS), Android phone (Android 10+), one tablet; large font sizes; bright light
 - [ ] Customer flow end-to-end on production: reserve, confirmation e-mail link opens the app, cancel, reminder
 - [ ] Staff flow: login, tenant switch, "Heute", QR scan + manual entry, collect, "Problem melden", logout
-- [ ] Privacy policy, imprint, support page live and linked in both listings
+- [x] Privacy policy, imprint, support and account-deletion pages live – [ ] entered in both listings
 - [ ] Data safety form and App Privacy answers match section 6
 - [x] Review account created (berkcan@gentlegroup.de, review bakery with sample data) – [ ] notes entered in the consoles
 - [x] Store texts for both stores within limits (`node scripts/check-store-texts.mjs`) – [ ] entered in the consoles

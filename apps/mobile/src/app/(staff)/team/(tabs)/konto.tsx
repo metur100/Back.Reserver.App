@@ -2,6 +2,7 @@ import { router } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { useAuth } from '@/auth/AuthContext';
+import { openLegalPage } from '@/components/LegalLinks';
 import { AppText, Button, Card, Chip, Notice, Screen } from '@/components/ui';
 import { env } from '@/config/env';
 import { de } from '@/i18n/de';
@@ -90,6 +91,15 @@ export default function AccountScreen() {
         {push?.status === 'denied' ? <Notice tone="warning">{de.staff.pushDenied}</Notice> : null}
         {push?.status === 'unavailable' ? <Notice tone="info">{de.staff.pushUnavailable}</Notice> : null}
         <Button label={de.staff.pushRegister} icon="notifications" variant="secondary" loading={pushBusy} onPress={() => void registerPush()} />
+      </Card>
+
+      <Card style={styles.gap}>
+        <AppText variant="label">{de.legal.title}</AppText>
+        <Button label={de.legal.privacy} icon="shield-checkmark" variant="secondary" onPress={() => void openLegalPage('privacy')} accessibilityLabel={de.legal.a11y(de.legal.privacy)} testID="account-privacy" />
+        <Button label={de.legal.imprint} icon="information-circle" variant="secondary" onPress={() => void openLegalPage('imprint')} accessibilityLabel={de.legal.a11y(de.legal.imprint)} testID="account-imprint" />
+        <Button label={de.legal.support} icon="help-circle" variant="secondary" onPress={() => void openLegalPage('support')} accessibilityLabel={de.legal.a11y(de.legal.support)} testID="account-support" />
+        <AppText variant="caption">{de.legal.deleteAccountHint}</AppText>
+        <Button label={de.legal.deleteAccount} icon="trash" variant="secondary" onPress={() => void openLegalPage('deleteAccount')} accessibilityLabel={de.legal.a11y(de.legal.deleteAccount)} testID="account-delete" />
       </Card>
 
       <Button label={de.auth.logout} icon="log-out" variant="danger" onPress={() => void onLogout()} testID="logout" />
