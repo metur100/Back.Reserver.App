@@ -2,16 +2,19 @@
 
 > **Status (2026-11-02): The app has NOT been submitted to the Apple App Store or Google Play.**
 > Android is ready for a first upload: package `com.certidevelopment.backreserve`, a locally signed release AAB
-> 1.0.0 (versionCode 2) against the production API, the upload keystore, Play graphics from real emulator captures of
-> the release build, and a copy-paste sheet for every Play Console field in
+> 1.0.0 (**versionCode 3**, `backreserve-1.0.0-3-release.aab`, built and verified 2026-11-02; versionCode 2 is
+> superseded – do not upload it) against the production API, the upload keystore, Play graphics from real emulator
+> captures of the release build, and a copy-paste sheet for every Play Console field in
 > [`apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md`](../apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md).
 > iOS: listing texts, review notes, age rating / privacy answers and iPhone 6.9" / 6.3" / iPad 13" screenshots are in
 > [`apps/mobile/store-assets/ios/APP-STORE-CONNECT.md`](../apps/mobile/store-assets/ios/APP-STORE-CONNECT.md); no iOS
 > build exists yet (EAS Build needed, no Mac).
-> Done on 2026-11-02 (ships with versionCode/build 3, not built yet): complete privacy policy and imprint, account
+> Done on 2026-11-02 (in versionCode/build 3): complete privacy policy and imprint, account
 > deletion page and support page on the landing site; privacy/imprint links inside the app (Apple 5.1.1(i));
 > `ios.privacyManifests`; `SYSTEM_ALERT_WINDOW` blocked; review bakery inventory extended to 2027-01-31.
-> Still open: rebuild the AAB (versionCode 3) and recapture screenshots, Play Console / App Store Connect app records,
+> Store screenshots checked against build 3: none of the 8 captured screens changed (the legal links sit on the start
+> screen, checkout step 4, team sign-in and Konto – none of them is in the set), so the set was kept.
+> Still open: Play Console / App Store Connect app records,
 > `assetlinks.json` / `apple-app-site-association`, EAS project, push.
 
 The app is an Expo (SDK 57) / React Native app in `apps/mobile` with Expo Router. It is used by **customers**
@@ -47,8 +50,9 @@ Release builds only talk to **HTTPS** APIs: Android release builds block clearte
 - `VERSION` (user-visible, e.g. `1.0.1`) → `version` on both platforms
 - `BUILD_NUMBER` (integer, must increase for every upload) → iOS `buildNumber` and Android `versionCode`
 
-Current: `VERSION = '1.0.0'`, `BUILD_NUMBER = 3` (versionCode 1 was built on 2026-10-29 but never uploaded; the
-2026-11-02 bundle uses 2; 3 is for the next bundle with the in-app legal links). Signed bundles are kept next to the key as
+Current: `VERSION = '1.0.0'`, `BUILD_NUMBER = 3` (versionCode 1 was built on 2026-10-29 but never uploaded; versionCode 2
+was built on 2026-11-02 and superseded the same day without upload; versionCode 3 – with the in-app legal links – is
+the bundle to upload). The next upload needs `BUILD_NUMBER = 4`. Signed bundles are kept next to the key as
 `C:\Users\TurkesMedin\keystore\backreserve\backreserve-<version>-<versionCode>-release.aab`.
 
 (Alternatively switch to `"appVersionSource": "remote"` with `"autoIncrement": true` for the production profile.)
@@ -92,7 +96,7 @@ the Play listing (see 6).
 
 ## 5. Screenshots
 
-All store screenshots (2026-11-02) are real captures of the **release build** on the Android emulator
+All store screenshots (2026-11-02) are real captures of the **release build** (versionCode 2; checked unchanged in versionCode 3) on the Android emulator
 (AVD `Pixel_10_Pro_XL`) against the production API, logged in as the review account / browsing the review bakery,
 in Android demo mode (clock 09:30, full battery and Wi-Fi, no notifications). Raw captures are framed with a German
 headline by `apps/mobile/scripts/store-screenshots.mjs` (needs `@napi-rs/canvas@0.1.65` via `NODE_PATH`; fonts
@@ -308,7 +312,7 @@ The running app shows the API it talks to under Team-Bereich → Konto ("Server:
 
 - [x] Android package / link host / production API set (section 1); production API reachable over HTTPS
 - [ ] Remaining placeholders in section 1 (EAS project, ASC app id, legal pages, deletion URL, support URL)
-- [x] Version 1.0.0 / build 2 – signed Android AAB built and verified 2026-11-02 (see GOOGLE-PLAY-CONSOLE.md §2)
+- [x] Version 1.0.0 / build 3 – signed Android AAB built and verified 2026-11-02 (see GOOGLE-PLAY-CONSOLE.md §2); build 2 superseded
 - [x] Privacy policy linked inside the app (Apple 5.1.1(i)) and `ios.privacyManifests` declared (APP-STORE-CONNECT.md §7) – build 3
 - [x] Review bakery inventory extended to 2027-01-31 – [ ] trial date 2026-11-28 unchanged (no supported way; not enforced by the backend)
 - [ ] Tested on real devices: iPhone (current iOS), Android phone (Android 10+), one tablet; large font sizes; bright light

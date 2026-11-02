@@ -1,4 +1,4 @@
-# Google Play Console – copy-paste checklist (BackReserve 1.0.0, versionCode 2)
+# Google Play Console – copy-paste checklist (BackReserve 1.0.0, versionCode 3)
 
 Everything needed to create the app in Play Console and submit the first release. Go top to bottom; each block says
 which Console page it belongs to. Status as of 2026-11-02. **Nothing has been uploaded yet.**
@@ -10,7 +10,7 @@ block in this file; results in §8). The App Store counterpart is
 |---|---|
 | Package name | `com.certidevelopment.backreserve` |
 | Developer | Medin Turkes · Certi Development (same developer account as AngebotPilot) |
-| Version | versionName `1.0.0`, versionCode `2` (built from `main` on 2026-11-02); **next upload: versionCode `3`** (`BUILD_NUMBER = 3` in `app.config.ts`, adds the in-app legal links and blocks `SYSTEM_ALERT_WINDOW`; AAB not built yet) |
+| Version | versionName `1.0.0`, **versionCode `3`** (built from `main` at 49750fc on 2026-11-02; adds the in-app legal links and blocks `SYSTEM_ALERT_WINDOW`). versionCode 2 is superseded – do not upload it. Next upload: `BUILD_NUMBER = 4` |
 | Default language | German – de-DE. The app UI is **German only** (`src/i18n/de.ts`); an en-US listing translation is optional (texts below) |
 | App or game | App · Free · no in-app purchases (customers pay in the bakery; bakeries' subscriptions are not sold via Play) |
 | Backend | production API `https://backreserve.runasp.net`, web app `https://reserver-app.gentlegroup.de` |
@@ -22,8 +22,9 @@ pre-submission checklist §10).
 > - Privacy policy, imprint, account-deletion page and support page on `reserver.gentlegroup.de` are complete (operator
 >   Berk-Can Atesoglu (Gentle Group Studios), Girardetstraße 17, 42109 Wuppertal, +49 175 4701892, office@gentlegroup.de); no placeholders left.
 > - The app links privacy policy and imprint on the start screen, at checkout and on the team sign-in, plus
->   privacy/imprint/help/account deletion under Team → Konto. These changes ship with **versionCode 3** (not built yet –
->   rebuild the AAB and recapture screenshots before uploading; the versionCode 2 AAB below lacks them).
+>   privacy/imprint/help/account deletion under Team → Konto. These changes are in the **versionCode 3** AAB below
+>   (built and verified 2026-11-02; legal links checked on the emulator). The 8 store screenshots show none of the
+>   changed screens and were kept.
 > - Review bakery: daily inventory extended to **2027-01-31**; its trial date (2026-11-28) cannot be changed through the
 >   product (see §7) – the date is shown only and not enforced by the backend.
 > - Still open: `/.well-known/assetlinks.json` on `reserver-app.gentlegroup.de` returns 404, so App Links (`autoVerify`)
@@ -48,17 +49,18 @@ pre-submission checklist §10).
 
 | Item | Value |
 |---|---|
-| Signed AAB (upload this) | `C:\Users\TurkesMedin\keystore\backreserve\backreserve-1.0.0-2-release.aab` (outside Git) |
+| Signed AAB (upload this) | `C:\Users\TurkesMedin\keystore\backreserve\backreserve-1.0.0-3-release.aab` (versionCode 3, outside Git) |
 | Upload keystore | `C:\Users\TurkesMedin\keystore\backreserve\backreserve-upload.jks` (PKCS12, RSA 4096, valid until 2056-10-21) · alias `backreserve-upload` |
 | Keystore password | in `C:\Users\TurkesMedin\keystore\backreserve-password.txt` (store and key password are identical) – never commit, never paste anywhere |
 | Upload certificate | `CN=Medin Turkes, O=Medin Turkes, C=DE` |
 | Upload certificate SHA-256 | `38:44:AF:DF:3D:BE:18:5C:D8:15:69:C1:35:CC:70:B8:22:6D:A3:4B:B4:D5:F2:DB:75:8A:F7:8D:98:91:C6:FD` |
-| AAB SHA-256 | `d32ff78ea8cbea0d4960c8c6e0712d6e576a0644ae1b677456ffb525f96eadb3` (89,577,536 bytes, built 2026-11-02) |
-| Verification | `jarsigner -verify` → "jar verified"; signer certificate SHA-256 = keystore entry above; `applicationId` `com.certidevelopment.backreserve`, label `BackReserve`; JS bundle contains `https://backreserve.runasp.net` and no `localhost` / `10.0.2.2` |
-| Manifest | minSdk 24 · targetSdk 36 · App Links host `reserver-app.gentlegroup.de` · no `AD_ID`. Permissions: INTERNET, ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE, CAMERA (QR scan), POST_NOTIFICATIONS, VIBRATE, RECEIVE_BOOT_COMPLETED, WAKE_LOCK, USE_BIOMETRIC/USE_FINGERPRINT (expo-secure-store), c2dm RECEIVE (expo-notifications), launcher-badge permissions, READ/WRITE_EXTERNAL_STORAGE (maxSdk 32), SYSTEM_ALERT_WINDOW merged in from a library – **blocked** via `android.blockedPermissions` from versionCode 3 on (the app never draws overlays) |
+| AAB SHA-256 | `dc6ba65301302d0324f96f9992eb612db6a6e087ecf50b5c9a3e98ca3108105b` (89,579,833 bytes, built 2026-11-02) |
+| Verification (versionCode 3) | no "signed with the DEBUG key" in the build log; `jarsigner -verify` → "jar verified" (usual self-signed / no-timestamp warnings); AAB signer (`keytool -printcert -jarfile`) and APK signer (`apksigner verify --print-certs`) SHA-256 = keystore entry above; `aapt2 dump badging`: package `com.certidevelopment.backreserve`, versionCode `3`, versionName `1.0.0`, label `BackReserve`; bundled config `apiUrl` `https://backreserve.runasp.net`, `appEnv` `production` (the JS bundle only contains the unused dev fallback strings `http://10.0.2.2:5280` / `http://localhost:5280` from `src/config/env.ts`); on the emulator Konto shows "Version 1.0.0 (production) · Server: https://backreserve.runasp.net" |
+| Manifest | minSdk 24 · targetSdk 36 · App Links host `reserver-app.gentlegroup.de` · no `AD_ID`. Permissions: INTERNET, ACCESS_NETWORK_STATE, ACCESS_WIFI_STATE, CAMERA (QR scan), POST_NOTIFICATIONS, VIBRATE, RECEIVE_BOOT_COMPLETED, WAKE_LOCK, USE_BIOMETRIC/USE_FINGERPRINT (expo-secure-store), c2dm RECEIVE (expo-notifications), launcher-badge permissions, READ/WRITE_EXTERNAL_STORAGE (maxSdk 32), `SYSTEM_ALERT_WINDOW` and `RECORD_AUDIO` **not** in the versionCode 3 APK (blocked via `android.blockedPermissions`; SYSTEM_ALERT_WINDOW was still merged in from a library in versionCode 2) |
 
-- **Older bundle** `backreserve-1.0.0-1-release.aab` (versionCode 1, 2026-10-29) was never uploaded – do not upload it;
-  versionCode 1 is simply skipped.
+- **Older bundles** `backreserve-1.0.0-1-release.aab` (versionCode 1, 2026-10-29) and `backreserve-1.0.0-2-release.aab`
+  (versionCode 2, 2026-11-02, without the in-app legal links) were never uploaded – do not upload them; versionCodes 1
+  and 2 are simply skipped.
 - **Back up** the keystore and the password file to a second secure location – losing the upload key means a key
   reset request to Google.
 - **Play App Signing:** accept the default (Google manages the app signing key; you keep the upload key above). After
@@ -71,7 +73,7 @@ pre-submission checklist §10).
 
 ### Release name and notes
 
-Release name: `1.0.0 (2)`
+Release name: `1.0.0 (3)`
 
 Release notes – paste both into the release notes field, each wrapped in its language tag
 (`<de-DE>` … `</de-DE>`, `<en-US>` … `</en-US>`).
@@ -184,7 +186,7 @@ BackReserve is a service for local bakeries. Products, prices, pickup times and 
 
 All files are in `apps/mobile/store-assets/android/` (absolute:
 `C:\Users\TurkesMedin\repos\Medin\BackReserve\apps\mobile\store-assets\android\`). Screenshots are real captures of
-the **release build** (versionCode 2) on the Android emulator against the production API with the review bakery
+the **release build** (versionCode 2; checked against versionCode 3 – none of the 8 screens changed) on the Android emulator against the production API with the review bakery
 “Bäckerei Berkcan” (fictitious customers, `@example.com` addresses), Android demo mode for a clean status bar (09:30,
 full battery/Wi-Fi, no notifications), framed with a headline. Regenerate with `scripts/store-screenshots.mjs`
 (STORE_RELEASE.md §5).

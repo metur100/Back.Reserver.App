@@ -185,7 +185,7 @@ Support URL / Marketing URL: same as de-DE.
 
 | Field | Value |
 |---|---|
-| Version | `1.0.0` (`VERSION` in `apps/mobile/app.config.ts`); build number `2` (`BUILD_NUMBER` → `ios.buildNumber`, same counter as Android `versionCode`) |
+| Version | `1.0.0` (`VERSION` in `apps/mobile/app.config.ts`); build number `3` (`BUILD_NUMBER` → `ios.buildNumber`, same counter as Android `versionCode`; build 2 was Android-only and is superseded) |
 | Copyright | `2026 Medin Turkes` |
 | Routing app coverage file | none |
 | Sign in with Apple | not offered (staff use e-mail/password of their bakery account, no third-party login → guideline 4.8 does not apply) |
@@ -199,7 +199,7 @@ Support URL / Marketing URL: same as de-DE.
 
 ### Screenshots (App Store Connect → Previews and Screenshots)
 
-Real captures of the Android **release build** (versionCode 2, same JavaScript bundle as the iOS app) against the
+Real captures of the Android **release build** (versionCode 2; checked against build 3 – none of the 8 screens changed; same JavaScript bundle as the iOS app) against the
 production API with the review bakery “Bäckerei Berkcan” (fictitious customers, `@example.com` addresses), captured at
 the iPhone / iPad logical screen widths (440 dp iPhone, 1032 dp iPad); the Android status and navigation bars are
 cropped away. Same captions and framing as the Play set. Regenerate with `scripts/store-screenshots.mjs` (profiles

@@ -43,3 +43,4 @@ Use for every production release. Items marked **(first launch)** apply to the i
 - [ ] See `docs/STORE_RELEASE.md`: version/build numbers bumped, production API URL, store listing and privacy declarations up to date, tested on real iOS and Android devices.
 - [ ] Store texts updated in `apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md` and `apps/mobile/store-assets/ios/APP-STORE-CONNECT.md`; `cd apps/mobile && node scripts/check-store-texts.mjs` passes.
 - [ ] Screenshots re-taken from the release build when the UI changed (`scripts/store-screenshots.mjs`, STORE_RELEASE.md §5).
+- [ ] Android 1.0.0 first upload: `C:\Users\TurkesMedin\keystore\backreserve\backreserve-1.0.0-3-release.aab` (versionCode 3, built and verified 2026-11-02, SHA-256 in GOOGLE-PLAY-CONSOLE.md §2). versionCode 1 and 2 are superseded – never upload them; the next upload needs `BUILD_NUMBER = 4`.
