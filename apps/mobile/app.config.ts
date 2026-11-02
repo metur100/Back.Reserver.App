@@ -28,7 +28,7 @@ const DEFAULT_API_URL: Record<AppEnv, string | null> = {
 const UNIVERSAL_LINK_HOST = process.env.UNIVERSAL_LINK_HOST ?? 'reserver-app.gentlegroup.de';
 const BUNDLE_ID = 'com.certidevelopment.backreserve';
 const VERSION = '1.0.0';
-const BUILD_NUMBER = 1;
+const BUILD_NUMBER = 2;
 
 export default ({ config }: ConfigContext): ExpoConfig => ({
   ...config,

@@ -1,12 +1,16 @@
 # Store release – BackReserve mobile app (iOS & Android)
 
-> **Status (2026-10-29): The app has NOT been submitted to the Apple App Store or Google Play.**
+> **Status (2026-11-02): The app has NOT been submitted to the Apple App Store or Google Play.**
 > Android is ready for a first upload: package `com.certidevelopment.backreserve`, a locally signed release AAB
-> 1.0.0 (versionCode 1) against the production API, an upload keystore, Play listing graphics and a copy-paste
-> checklist for every Play Console field in
+> 1.0.0 (versionCode 2) against the production API, the upload keystore, Play graphics from real emulator captures of
+> the release build, and a copy-paste sheet for every Play Console field in
 > [`apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md`](../apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md).
-> Still open: real privacy policy / imprint / deletion page on the landing site (currently placeholders), Play Console
-> app record, `assetlinks.json`, EAS project, everything iOS (bundle id, App Store Connect, screenshots), push.
+> iOS: listing texts, review notes, age rating / privacy answers and iPhone 6.9" / 6.3" / iPad 13" screenshots are in
+> [`apps/mobile/store-assets/ios/APP-STORE-CONNECT.md`](../apps/mobile/store-assets/ios/APP-STORE-CONNECT.md); no iOS
+> build exists yet (EAS Build needed, no Mac).
+> Still open: real privacy policy / imprint (placeholders), account-deletion page and support/contact page on the
+> landing site, privacy-policy link inside the app (Apple 5.1.1(i)), Play Console / App Store Connect app records,
+> `assetlinks.json` / `apple-app-site-association`, EAS project, push.
 
 The app is an Expo (SDK 57) / React Native app in `apps/mobile` with Expo Router. It is used by **customers**
 (reserve bakery products without an account, pay at pickup) and by **bakery staff** (sign in, process today's orders,
@@ -24,10 +28,11 @@ record pickups by code or QR scan). It talks to the same BackReserve API as the 
 | Preview builds API | `eas.json` → `build.preview.env.EXPO_PUBLIC_API_URL` | `https://backreserve.runasp.net` (there is no separate staging API) |
 | EAS project id / owner | env `EAS_PROJECT_ID`, `EAS_OWNER` (read in `app.config.ts`) | **not set** |
 | App Store Connect app id | `eas.json` → `submit.production.ios.ascAppId` | **placeholder** `REPLACE_WITH_APP_STORE_CONNECT_APP_ID` |
-| Website | Store listings | `https://reserver.gentlegroup.de/` (landing page, repo `metur100/Back.Reserver.Landing`) |
-| Privacy policy URL | Store listings | `https://reserver.gentlegroup.de/datenschutz.html` – **page content is still a placeholder** |
-| Imprint (Impressum) | Store listings (required for German publishers) | `https://reserver.gentlegroup.de/impressum.html` – **page content is still a placeholder** |
-| Account/data deletion URL | Play Data safety | **missing** – add `#loeschung` to the privacy page |
+| Website / marketing URL | Store listings | `https://reserver.gentlegroup.de/` (landing page, repo `metur100/Back.Reserver.Landing`; HTTP 200 on 2026-11-02) |
+| Privacy policy URL | Store listings | `https://reserver.gentlegroup.de/datenschutz.html` – HTTP 200, **page content is still a placeholder** |
+| Imprint (Impressum) | Store listings (required for German publishers) | `https://reserver.gentlegroup.de/impressum.html` – HTTP 200, **page content is still a placeholder** |
+| Account/data deletion URL | Play Data safety | **missing** – add `#loeschung` to the privacy page (or a separate page) |
+| Support URL | App Store Connect (required) | **missing** – no support/contact page (`/support.html` → 404); interim: the start page |
 | Support e-mail | Store listings | `certidevelopment@gmail.com` (developer account contact) |
 
 Release builds only talk to **HTTPS** APIs: Android release builds block cleartext HTTP and iOS ATS blocks it as well.
@@ -39,6 +44,10 @@ Release builds only talk to **HTTPS** APIs: Android release builds block clearte
 
 - `VERSION` (user-visible, e.g. `1.0.1`) → `version` on both platforms
 - `BUILD_NUMBER` (integer, must increase for every upload) → iOS `buildNumber` and Android `versionCode`
+
+Current: `VERSION = '1.0.0'`, `BUILD_NUMBER = 2` (versionCode 1 was built on 2026-10-29 but never uploaded; the
+2026-11-02 bundle uses 2). Signed bundles are kept next to the key as
+`C:\Users\TurkesMedin\keystore\backreserve\backreserve-<version>-<versionCode>-release.aab`.
 
 (Alternatively switch to `"appVersionSource": "remote"` with `"autoIncrement": true` for the production profile.)
 
@@ -56,81 +65,58 @@ Generated in brand colours by `npm run generate:assets` (`scripts/generate-asset
 | `favicon.png` | web preview | – |
 
 Google Play listing graphics are in `apps/mobile/store-assets/android/`: `icon-512.png` (512×512, opaque),
-`feature-graphic-1024x500.png` (24-bit PNG, no transparency), 8 phone screenshots (1080×1920), 6 screenshots each for
-7" (1200×1920) and 10" tablets (1600×2560). iOS screenshots are not produced yet.
+`feature-graphic-1024x500.png` (24-bit PNG, no transparency), 8 phone screenshots (1080×1920) and 8 screenshots each
+for 7" (1200×2134) and 10" tablets (1620×2880). App Store screenshots and `app-icon-1024.png` are in
+`apps/mobile/store-assets/ios/` (§5).
 
-## 4. Store listing (German, store-facing)
+## 4. Store listings
 
-**App name (iOS, ≤ 30):** `BackReserve`
-**Untertitel (iOS, ≤ 30):** `Beim Bäcker vorbestellen`
-**Titel (Google Play, ≤ 30):** `BackReserve – Vorbestellen`
+All store texts (names, subtitles, short/full descriptions, keywords, promotional text, release notes, review notes),
+category, contact and URLs, age-rating and privacy answers are maintained in two copy-paste sheets – edit them there,
+not here:
 
-**Kurzbeschreibung (Google Play, ≤ 80 Zeichen, 77):**
-> Brötchen, Kuchen & mehr beim Bäcker vorbestellen – bezahlt wird bei Abholung.
+- Google Play: [`apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md`](../apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md)
+- App Store Connect: [`apps/mobile/store-assets/ios/APP-STORE-CONNECT.md`](../apps/mobile/store-assets/ios/APP-STORE-CONNECT.md)
 
-**Beschreibung (DE):**
-
-> Nie wieder vor leeren Regalen stehen: Mit BackReserve reservierst du Brötchen, Croissants, Kuchen und Frühstücksboxen bei deiner Bäckerei – bequem vorab und ganz ohne Kundenkonto.
->
-> **So funktioniert's**
-> • Bäckerei über ihren Link oder ihr Kürzel öffnen
-> • Standort und Abholtag wählen – du siehst sofort, was noch verfügbar ist
-> • Produkte in den Warenkorb legen und ein Abholzeitfenster aussuchen
-> • Name und E-Mail angeben, reservieren – fertig
->
-> **Bezahlt wird bei Abholung.** Es gibt keine Online-Zahlung und keine Gebühren für dich.
->
-> **Dein Abholcode**
-> Nach der Reservierung erhältst du einen kurzen Abholcode und einen QR-Code. Zeige ihn einfach an der Theke – deine Bestellung liegt bereit. Auf Wunsch erinnert dich die App eine Stunde vor der Abholung.
->
-> **Flexibel bleiben**
-> Unter „Meine Bestellungen“ siehst du jederzeit den aktuellen Status und kannst bis zum Stornierungsschluss der Bäckerei kostenlos stornieren.
->
-> **Für Bäckerei-Teams**
-> Mitarbeitende melden sich mit ihrem BackReserve-Zugang an, sehen alle Bestellungen des Tages nach Abholzeit sortiert, bereiten sie mit einem Fingertipp vor und erfassen die Abholung per Code-Eingabe oder QR-Scan. Abholprobleme lassen sich direkt an der Bestellung vermerken.
->
-> **Datenschutz**
-> Kein Tracking, keine Werbung. Wir verarbeiten nur die Daten, die für deine Reservierung nötig sind. Deine Bestellzugänge werden verschlüsselt auf deinem Gerät gespeichert.
->
-> BackReserve ist ein Service für lokale Bäckereien. Allergenangaben stammen von der jeweiligen Bäckerei.
-
-**Schlüsselwörter (iOS, ≤ 100 Zeichen, 92):**
-`Bäckerei,vorbestellen,Brötchen,Kuchen,Abholung,Reservierung,Bäcker,Croissant,Donut,Frühstück`
-
-**Werbetext (iOS Promotional Text, ≤ 170):**
-> Jetzt neu: Erinnerung eine Stunde vor der Abholung – und für Bäckerei-Teams die Abholung per QR-Scan.
-
-**Kategorie:** iOS primär *Essen & Trinken* (Food & Drink), sekundär *Shopping*; Google Play *Essen & Trinken*.
-**Altersfreigabe:** 4+ (Apple), IARC/USK „ab 0 Jahren“ – no user-generated public content, no ads, no purchases.
-**Preis:** kostenlos, keine In-App-Käufe.
-
-**App Review notes (Apple) / Zugangsdaten für die Prüfung (Google):**
-The staff area requires a login. Review account on the **production** system: `berkcan@gentlegroup.de` /
-(see GentleHub → project → Testfirma-Login) (owner of the review bakery “Bäckerei Berkcan”, slug `baeckerei-berkcan`, 2 locations, 40 products,
-sample orders in every status; details in `GOOGLE-PLAY-CONSOLE.md` §7). The customer flow needs no account. Explain that payment happens in the shop (no digital goods → no IAP required).
+Languages: German (de-DE) is the primary and only app language; both sheets also contain an optional en-US listing.
+Every length-limited field is a `(max N)` block; check them with `cd apps/mobile && node scripts/check-store-texts.mjs`
+(exit code 1 if a text is over its limit). Summary: Play title `BackReserve – Vorbestellen`, iOS name `BackReserve`,
+iOS subtitle `Beim Bäcker vorbestellen`, category Food & Drink (iOS secondary: Shopping), rating 4+ / USK 0, free, no
+in-app purchases. Review account: `berkcan@gentlegroup.de` (password in GentleHub → project → Testfirma-Login; never
+commit it), owner of the review bakery “Bäckerei Berkcan” (`baeckerei-berkcan`, details in GOOGLE-PLAY-CONSOLE.md §7).
 Accounts are not created in the app (bakeries register on the web, staff are invited), therefore the in-app account
-deletion requirement (App Store Guideline 5.1.1(v)) does not apply; still link an account-deletion request page in the
-Play listing (see 6).
+deletion requirement (App Store Guideline 5.1.1(v)) does not apply; still publish an account-deletion request page for
+the Play listing (see 6).
 
 ## 5. Screenshots
 
-Take screenshots in German from a production-like build (demo bakery), at least: start screen, bakery with products,
-pickup slot selection, confirmation with QR code, "Meine Bestellungen", staff "Heute" list, staff pickup screen.
-The Android set (done 2026-10-29) was rendered from the Expo web export (react-native-web, same components) with
-Playwright against the production API and the review bakery; re-take on a device/emulator when the UI changes.
-Note: Play rejects screenshots whose long side exceeds twice the short side (e.g. 1080×2400).
+All store screenshots (2026-11-02) are real captures of the **release build** on the Android emulator
+(AVD `Pixel_10_Pro_XL`) against the production API, logged in as the review account / browsing the review bakery,
+in Android demo mode (clock 09:30, full battery and Wi-Fi, no notifications). Raw captures are framed with a German
+headline by `apps/mobile/scripts/store-screenshots.mjs` (needs `@napi-rs/canvas@0.1.65` via `NODE_PATH`; fonts
+Georgia Bold / Segoe UI Semibold). Screens: 1 bakery & pickup day · 2 products · 3 pickup slot · 4 pickup code + QR ·
+5 “Meine Bestellungen” · 6 staff “Heute” · 7 staff order detail · 8 staff pickup by code.
 
-| Store | Device class | Size (portrait) | Count |
+Capture sizes (`adb shell wm size` / `wm density`; reset both and `demo exit` afterwards):
+
+| Set | Emulator screen | Logical size | Profile / crop |
 |---|---|---|---|
-| App Store | iPhone 6.9" (iPhone 16/17 Pro Max) | 1320×2868 (or 1290×2796) | 1–10, **required** (6.9" set is scaled down for smaller iPhones) |
-| App Store | iPhone 6.7" | 1290×2796 | optional if 6.9" provided |
-| App Store | iPhone 6.5" | 1284×2778 or 1242×2688 | optional if 6.9" provided |
-| App Store | iPad 13" (`supportsTablet: true`) | 2064×2752 (or 2048×2732 for 12.9") | 1–10, **required** because iPad is supported |
-| Google Play | Phone | 9:16, e.g. 1080×1920 (min 320 px, max 3840 px per side, long side ≤ 2× short side) | 2–8, required |
-| Google Play | 7" tablet | e.g. 1200×1920 | up to 8, recommended (needed for tablet visibility) |
-| Google Play | 10" tablet | e.g. 1600×2560 | up to 8, recommended |
+| Play phone | native 1344×2992 @ 480 dpi | 448×997 dp | `phone` (status bar kept, demo mode) |
+| Play 7" tablet | 1200×1920 @ 320 dpi | 600×960 dp | `tablet-7` |
+| Play 10" tablet | 1600×2560 @ 320 dpi | 800×1280 dp | `tablet-10` |
+| App Store iPhone 6.9" / 6.3" | 1320×2868 @ 480 dpi | 440×956 dp | `iphone-6.9`, `iphone-6.3` with status/nav bar cropped |
+| App Store iPad 13" | 2064×2752 @ 320 dpi | 1032×1376 dp | `ipad-13` with status/nav bar cropped |
 
-PNG or JPEG, no transparency, no device frames that misrepresent the app.
+| Store | Device class | Size (portrait) | Delivered |
+|---|---|---|---|
+| App Store | iPhone 6.9" | 1320×2868 | 8 in `store-assets/ios/iphone-6.9/` (**required**; scaled down for smaller iPhones) |
+| App Store | iPhone 6.3" | 1206×2622 | 8 in `store-assets/ios/iphone-6.3/` (optional) |
+| App Store | iPad 13" (`supportsTablet: true`) | 2064×2752 | 8 in `store-assets/ios/ipad-13/` (**required** because iPad is supported) |
+| Google Play | Phone | 1080×1920 (9:16; long side ≤ 2× short side) | 8 in `store-assets/android/phone-screenshots/` |
+| Google Play | 7" tablet | 1200×2134 (9:16) | 8 in `store-assets/android/tablet-7-screenshots/` |
+| Google Play | 10" tablet | 1620×2880 (9:16, sides ≥ 1080 px) | 8 in `store-assets/android/tablet-10-screenshots/` |
+
+JPEG (opaque, no alpha), no device frames that misrepresent the app (the plain dark bezel is generic).
 
 ## 6. Privacy declarations (based on what the app actually handles)
 
@@ -282,7 +268,7 @@ Notes:
 - OTA updates (`eas update`) can ship JS-only fixes on the `production` channel; native changes need a new build.
 - Signing material (`*.jks`, `*.p8`, `*.p12`, `*.mobileprovision`) is git-ignored and must stay in EAS / a secret store.
 
-### Local signed build (Android, without EAS) – how the 1.0.0 AAB was made
+### Local signed build (Android, without EAS) – how the 1.0.0 AABs were made
 
 `plugins/withAndroidReleaseSigning.js` adds a `release` signing config that reads `BACKRESERVE_UPLOAD_STORE_FILE`,
 `BACKRESERVE_UPLOAD_STORE_PASSWORD`, `BACKRESERVE_UPLOAD_KEY_ALIAS`, `BACKRESERVE_UPLOAD_KEY_PASSWORD` from environment
@@ -291,7 +277,9 @@ the debug key (never upload those). `plugins/withLocalCmakeDir.js` writes `ANDRO
 `android/local.properties` – needed on Windows because the SDK's CMake 3.22 ninja fails on long paths.
 
 Upload key: `C:\Users\TurkesMedin\keystore\backreserve\backreserve-upload.jks`, alias `backreserve-upload`,
-password in `C:\Users\TurkesMedin\keystore\backreserve-password.txt` (never commit; back both up).
+password in `C:\Users\TurkesMedin\keystore\backreserve-password.txt` (never commit; back both up). The file is a
+small labelled note, not a bare password: use the value after the colon on its password line (store and key password
+are identical) and check it with `keytool -list -keystore … -storepass:env KP` before building.
 
 ```bash
 cd apps/mobile
@@ -301,25 +289,36 @@ export BACKRESERVE_UPLOAD_STORE_FILE=C:/Users/TurkesMedin/keystore/backreserve/b
 export BACKRESERVE_UPLOAD_KEY_ALIAS=backreserve-upload
 export BACKRESERVE_UPLOAD_STORE_PASSWORD=… BACKRESERVE_UPLOAD_KEY_PASSWORD=…   # from the password file
 npx expo prebuild --platform android --clean --no-install
-cd android && ./gradlew bundleRelease
-# → android/app/build/outputs/bundle/release/app-release.aab
-keytool -printcert -jarfile app/build/outputs/bundle/release/app-release.aab   # must show CN=Medin Turkes, not Android Debug
+cd android && ./gradlew app:bundleRelease app:assembleRelease
+# → app/build/outputs/bundle/release/app-release.aab (+ apk/release/app-release.apk for the emulator screenshots)
+# the build log must NOT contain "signed with the DEBUG key"
+jarsigner -verify app/build/outputs/bundle/release/app-release.aab             # "jar verified"
+keytool -printcert -jarfile app/build/outputs/bundle/release/app-release.aab   # CN=Medin Turkes, SHA-256 38:44:AF:…:C6:FD
+# aapt2 dump badging app/build/outputs/apk/release/app-release.apk → package com.certidevelopment.backreserve + versionCode
+cp app/build/outputs/bundle/release/app-release.aab \
+   C:/Users/TurkesMedin/keystore/backreserve/backreserve-<version>-<versionCode>-release.aab
 ```
+`expo prebuild` rewrites the `android`/`ios` scripts in `package.json` (`expo run:*`) – revert that before committing.
+A release build needs ~2.5 GB in `android/app/build`; delete that folder once the AAB is copied and verified.
+The running app shows the API it talks to under Team-Bereich → Konto ("Server: https://backreserve.runasp.net").
 `android/` is generated and git-ignored. Bump `VERSION` / `BUILD_NUMBER` in `app.config.ts` for every upload.
 
 ## 10. Pre-submission checklist
 
 - [x] Android package / link host / production API set (section 1); production API reachable over HTTPS
-- [ ] Remaining placeholders in section 1 (EAS project, ASC app id, legal pages, deletion URL)
-- [x] Version 1.0.0 / build 1 – signed Android AAB built and verified (see GOOGLE-PLAY-CONSOLE.md §2)
+- [ ] Remaining placeholders in section 1 (EAS project, ASC app id, legal pages, deletion URL, support URL)
+- [x] Version 1.0.0 / build 2 – signed Android AAB built and verified 2026-11-02 (see GOOGLE-PLAY-CONSOLE.md §2)
+- [ ] Privacy policy linked inside the app (Apple 5.1.1(i)) and `ios.privacyManifests` declared (APP-STORE-CONNECT.md §7)
+- [ ] Review bakery inventory extended beyond 2026-11-11 and its trial beyond 2026-11-28
 - [ ] Tested on real devices: iPhone (current iOS), Android phone (Android 10+), one tablet; large font sizes; bright light
 - [ ] Customer flow end-to-end on production: reserve, confirmation e-mail link opens the app, cancel, reminder
 - [ ] Staff flow: login, tenant switch, "Heute", QR scan + manual entry, collect, "Problem melden", logout
 - [ ] Privacy policy, imprint, support page live and linked in both listings
 - [ ] Data safety form and App Privacy answers match section 6
 - [x] Review account created (berkcan@gentlegroup.de, review bakery with sample data) – [ ] notes entered in the consoles
-- [x] Android screenshots, icon and feature graphic produced – [ ] uploaded
+- [x] Store texts for both stores within limits (`node scripts/check-store-texts.mjs`) – [ ] entered in the consoles
+- [x] Play screenshots (phone, 7", 10"), icon, feature graphic; App Store screenshots (6.9", 6.3", iPad 13") – [ ] uploaded
 - [ ] `assetlinks.json` / `apple-app-site-association` deployed and verified
 
-**Reminder: nothing has been submitted to any store yet.** Play Console field-by-field checklist:
-`apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md`.
+**Reminder: nothing has been submitted to any store yet.** Field-by-field sheets:
+`apps/mobile/store-assets/android/GOOGLE-PLAY-CONSOLE.md` and `apps/mobile/store-assets/ios/APP-STORE-CONNECT.md`.
